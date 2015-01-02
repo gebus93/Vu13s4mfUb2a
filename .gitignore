@@ -1,1 +1,14 @@
 Release/*
+/Debug/
+/.settings/*.xml
+/*.cproject
+/*.project
+/.settings/*.prefs
+/libraries/rlutil/*.gitignore
+/libraries/rlutil/docs/*.txt
+/libraries/rlutil/docs/HTML/files/docs/*.html
+/libraries/rlutil/docs/HTML/index/*.html
+*.html
+*.sh
+*.js
+*.css
