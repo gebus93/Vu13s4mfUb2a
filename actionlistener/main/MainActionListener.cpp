@@ -20,6 +20,9 @@ MainActionListener::MainActionListener()
 	dbManager = &DBManager::getInstance();
 	currentDB = 0;
 	running = true;
+
+	view.setDatabaseList(dbManager->getAll());
+	view.showMainView();
 }
 
 MainActionListener::~MainActionListener()
@@ -30,7 +33,6 @@ void MainActionListener::invoke()
 {
 	char action = 0;
 	MainActionListener listener;
-
 	do {
 		action = getkey();
 		listener.listen(action);
@@ -78,16 +80,20 @@ void MainActionListener::listen(char action) {
 
 void MainActionListener::upArrowAction()
 {
-	if (currentDB - 1 >= 0)
+	if (currentDB - 1 >= 0) {
 		currentDB--;
+		view.setCurrentDb(currentDB);
+	}
 
 	log.print("currentDB = " + numberToString(currentDB));
 }
 
 void MainActionListener::downArrowAction()
 {
-	if (currentDB + 1 < dbManager->count())
+	if (currentDB + 1 < dbManager->count()) {
 		currentDB++;
+		view.setCurrentDb(currentDB);
+	}
 
 	log.print("currentDB = " + numberToString(currentDB));
 }

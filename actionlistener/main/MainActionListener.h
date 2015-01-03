@@ -9,7 +9,9 @@
 #define ACTIONLISTENER_MAIN_MAINACTIONLISTENER_H_
 
 #include "../../util/logger/Logger.h"
-#include "../../database/dbmanager/DBManager.h"
+#include "../../view/main/MainView.h"
+
+class DBManager;
 
 class MainActionListener {
 public:
@@ -20,6 +22,7 @@ public:
 
 private:
 	DBManager* dbManager;
+	MainView view;
 	Logger log;
 	int currentDB;
 	bool running;
