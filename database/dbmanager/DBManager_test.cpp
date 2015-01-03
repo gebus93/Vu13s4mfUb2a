@@ -27,7 +27,13 @@ private:
 	bool thatCanUpdateDatabase();
 	bool thatCanPersistDatabase();
 	People createExamplePerson();
-
+	DBManager getDBManager()
+	{
+		DBManager dbManager = DBManager::getInstance();
+		while (dbManager.count())
+			dbManager.remove(0);
+		return dbManager;
+	}
 };
 
 inline int DBManager_test::start() {
@@ -54,7 +60,7 @@ inline int DBManager_test::start() {
 inline bool DBManager_test::thatCanGetInstance() {
 
 	try {
-		DBManager dbManager = DBManager::getInstance();
+		DBManager dbManager = getDBManager();
 
 		logger.print("DBManager_test.thatCanGetInstance() finished correctly.");
 		return true;
@@ -68,7 +74,7 @@ inline bool DBManager_test::thatCanGetInstance() {
 inline bool DBManager_test::thatCanCreateDatabase() {
 
 	try {
-		DBManager dbManager = DBManager::getInstance();
+		DBManager dbManager = getDBManager();
 
 		string dbname = "baza danych";
 		dbManager.add(dbname);
@@ -95,7 +101,7 @@ inline bool DBManager_test::thatCanCreateDatabase() {
 
 inline bool DBManager_test::thatCanRemoveDatabase() {
 	try {
-		DBManager dbManager = DBManager::getInstance();
+		DBManager dbManager = getDBManager();
 
 		string dbname = "baza danych";
 		dbManager.add(dbname);
@@ -122,8 +128,7 @@ inline bool DBManager_test::thatCanRemoveDatabase() {
 
 inline bool DBManager_test::thatCanUpdateDatabase() {
 	try {
-		DBManager dbManager = DBManager::getInstance();
-
+		DBManager dbManager = getDBManager();
 		string dbname = "baza danych";
 		dbManager.add(dbname);
 		Database<People> db = dbManager.get(0);
@@ -155,8 +160,7 @@ inline People DBManager_test::createExamplePerson() {
 
 inline bool DBManager_test::thatCanPersistDatabase() {
 	try {
-		DBManager dbManager = DBManager::getInstance();
-
+		DBManager dbManager = getDBManager();
 		string dbname = "baza danych";
 		dbManager.add(dbname);
 		Database<People> db = dbManager.get(0);
@@ -181,6 +185,7 @@ inline bool DBManager_test::thatCanPersistDatabase() {
 				return false;
 
 		logger.print("DBManager_test.thatCanPersistDatabase() finished correctly.");
+		dbManager.load();
 		return true;
 	} catch (int e) {
 		logger.printErr("DBManager_test.thatCanPersistDatabase() failed.");

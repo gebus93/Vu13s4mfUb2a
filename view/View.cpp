@@ -6,7 +6,7 @@
  */
 
 #include "View.h"
-#include "../libraries/rlutil/rlutil.h"
+#include "../util/utils.h"
 
 View::View()
 {
@@ -45,4 +45,13 @@ void View::printMenu(vector<string> menu) {
 
 	while (charsCount++ < (unsigned int) tcols())
 		putchar(' ');
+}
+
+void View::printButton(const char* label, bool confirmed) {
+	if (confirmed == true)
+		setColors(FONT_COLOR_WHITE, BACKGROUND_COLOR_LIGHT_BLUE);
+	else
+		setColors(FONT_COLOR_LIGHT_GRAY, 0);
+
+	printf(label);
 }

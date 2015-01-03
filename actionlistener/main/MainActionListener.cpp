@@ -9,6 +9,7 @@
 
 #include <string>
 
+#include "../../database/dbmanager/DBManager.h"
 #include "../../libraries/rlutil/rlutil.h"
 #include "../../util/utils.h"
 #include "../database/SelectedDatabaseActionListener.h"
@@ -22,6 +23,7 @@ MainActionListener::MainActionListener()
 	running = true;
 
 	view.setDatabaseList(dbManager->getAll());
+	view.setCurrentDb(currentDB);
 	view.showMainView();
 }
 
@@ -100,25 +102,44 @@ void MainActionListener::downArrowAction()
 
 void MainActionListener::deleteDBAction()
 {
+	bool confirmed = view.confirmDeleteView();
+	if (confirmed)
+	{
+		dbManager->remove(currentDB);
+		view.setDatabaseList(dbManager->getAll());
+	}
+
+	view.showMainView();
+
+	if (currentDB == dbManager->count())
+		view.setCurrentDb(--currentDB);
 }
 
 void MainActionListener::saveAction()
 {
+	dbManager->save();
 }
 
 void MainActionListener::createDBAction()
 {
+	std::string dbName = view.showCreateView();
+	if (dbName.length() > 0) {
+		dbManager->add(dbName);
+		view.setDatabaseList(dbManager->getAll());
+	}
+	getkey();
+	view.showMainView();
 }
 
 void MainActionListener::openDBAction()
 {
 	SelectedDatabaseActionListener::invoke();
-// TODO AFTER_INVOKE showMainView();
+	view.showMainView();
 }
 
 void MainActionListener::exitAction()
 {
-	// TODO showConfirmationView();
+// TODO showConfirmationView();
 	running = false;
 }
 

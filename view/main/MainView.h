@@ -20,11 +20,11 @@ public:
 	MainView();
 	virtual ~MainView();
 	void showMainView();
-	void showCreateView();
+	string showCreateView();
 	void showSaveView();
 	void showExitView();
 
-	void confirmDeleteView();
+	bool confirmDeleteView();
 
 	void setDatabaseList(const std::vector<Database<People> >& databaseList);
 
@@ -32,13 +32,15 @@ public:
 
 private:
 	int currentDB;
-	std::vector<std::string> getMainMenu();
 	std::vector<Database<People> > databaseList;
 	void showMainMenu();
 	void printBorderOfDatabasesTable();
 	void pressEnterToAccept(int lineNumber);
 	void printRowWithDatabase(int lineNumber, int index);
 	void showDatabaseList();
+	void showReturnSubMenu();
+	void showInputFieldBackground(const int FIELD_LENGTH);
+	bool confirmationSubView(const string& confirmation);
 };
 
 #endif /* VIEW_MAIN_MAINVIEW_H_ */
