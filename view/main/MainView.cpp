@@ -88,16 +88,19 @@ string MainView::showCreateView()
 
 }
 
-void MainView::showSaveView()
+bool MainView::showSaveView()
 {
+	string confirmation = "Czy chcesz zapisac wprowadzone zmiany?";
+	return confirmationSubView(confirmation);
 }
 
-void MainView::showExitView()
+bool MainView::showExitView()
 {
-}
+	string message = "Czy na pewno chcesz wyjsc z programu?";
 
-bool MainView::confirmationSubView(const string& confirmation)
-		{
+	return confirmationSubView(message);
+}
+bool MainView::confirmationSubView(const string& confirmation) {
 	locate(1, 4);
 	for (int i = 4, j = trows(); i < j; i++)
 		fillLine(' ');

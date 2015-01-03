@@ -21,8 +21,8 @@ public:
 	virtual ~MainView();
 	void showMainView();
 	string showCreateView();
-	void showSaveView();
-	void showExitView();
+	bool showSaveView();
+	bool showExitView();
 
 	bool confirmDeleteView();
 

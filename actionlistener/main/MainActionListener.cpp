@@ -117,7 +117,11 @@ void MainActionListener::deleteDBAction()
 
 void MainActionListener::saveAction()
 {
-	dbManager->save();
+	bool confirmed = view.showSaveView();
+	if (confirmed)
+		dbManager->save();
+
+	view.showMainView();
 }
 
 void MainActionListener::createDBAction()
@@ -139,7 +143,16 @@ void MainActionListener::openDBAction()
 
 void MainActionListener::exitAction()
 {
-// TODO showConfirmationView();
+	bool confirmed = view.showExitView();
+
+	if (!confirmed) {
+		view.showMainView();
+		return;
+	}
+
+	if (dbManager->isModified())
+		saveAction();
+
 	running = false;
 }
 
