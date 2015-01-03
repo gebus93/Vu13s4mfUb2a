@@ -118,3 +118,8 @@ DBManager::DBManager() {
 	modified = false;
 	load();
 }
+
+int DBManager::count()
+{
+	return (int) databases.size();
+}

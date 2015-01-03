@@ -1,0 +1,1 @@
+echo #define DEBUG > ..\\compilation_mode.h

@@ -33,8 +33,10 @@ public:
 	void saveAs(const string& dbname);
 	void load();
 	void load(const string& dbname);
+	int count();
 	virtual ~DBManager();
-	private:
+
+private:
 	vector<Database<People> > databases;
 	bool modified;
 	DBManager();

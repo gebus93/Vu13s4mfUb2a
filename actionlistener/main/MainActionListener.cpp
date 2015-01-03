@@ -38,32 +38,39 @@ void MainActionListener::invoke()
 }
 
 void MainActionListener::listen(char action) {
-	log.print("Wybrana akcja = " + numberToString(action));
-
 	switch (action) {
 	case KEY_UP:
+		log.print("Wybrana akcja = upArrowAction()");
 		upArrowAction();
 		return;
 
 	case KEY_DOWN:
+		log.print("Wybrana akcja = downArrowAction()");
 		downArrowAction();
 		return;
 
 	case KEY_DELETE:
+		log.print("Wybrana akcja = deleteDBAction()");
 		deleteDBAction();
+		return;
 
 	case KEY_ENTER:
-		deleteDBAction();
+		log.print("Wybrana akcja = openDBAction()");
+		openDBAction();
+		return;
 
 	case 's':
+		log.print("Wybrana akcja = saveAction()");
 		saveAction();
 		return;
 
 	case 'n':
+		log.print("Wybrana akcja = createDBAction()");
 		createDBAction();
 		return;
 
 	case 'q':
+		log.print("Wybrana akcja = exitAction()");
 		exitAction();
 		return;
 	}
@@ -71,10 +78,18 @@ void MainActionListener::listen(char action) {
 
 void MainActionListener::upArrowAction()
 {
+	if (currentDB - 1 >= 0)
+		currentDB--;
+
+	log.print("currentDB = " + numberToString(currentDB));
 }
 
 void MainActionListener::downArrowAction()
 {
+	if (currentDB + 1 < dbManager->count())
+		currentDB++;
+
+	log.print("currentDB = " + numberToString(currentDB));
 }
 
 void MainActionListener::deleteDBAction()

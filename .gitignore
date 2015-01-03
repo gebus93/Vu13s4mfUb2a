@@ -12,3 +12,5 @@ Release/*
 *.sh
 *.js
 *.css
+/Release/
+/compilation_mode.h

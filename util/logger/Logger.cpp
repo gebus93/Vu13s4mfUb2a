@@ -9,8 +9,15 @@
 
 #include <sys/types.h>
 #include <ctime>
+#include "../../compilation_mode.h"
 
 Logger::Logger() {
+#ifndef DEBUG
+	debugMode = false;
+	out = err = NULL;
+	return;
+#endif
+
 	debugMode = true;
 	out = fopen("out.log", "a+");
 	err = fopen("err.log", "a+");
