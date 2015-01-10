@@ -10,22 +10,21 @@
 
 #include "../../util/logger/Logger.h"
 #include "../../view/main/MainView.h"
+#include "../ActionListener.h"
 
-class DBManager;
+#include "../../database/dbmanager/DBManager.h"
 
-class MainActionListener {
+class MainActionListener : ActionListener {
 public:
 	virtual ~MainActionListener();
 	static void invoke();
 	void listen(char action);
-	bool isRunning() const;
 
 private:
 	DBManager* dbManager;
 	MainView view;
 	Logger log;
 	int currentDB;
-	bool running;
 
 	MainActionListener();
 	void upArrowAction();

@@ -8,21 +8,24 @@
 #ifndef ACTIONLISTENER_DATABASE_SELECTEDDATABASEACTIONLISTENER_H_
 #define ACTIONLISTENER_DATABASE_SELECTEDDATABASEACTIONLISTENER_H_
 
-#include "../../database/dbmanager/DBManager.h"
+#include "../../database/database/Database.cpp"
+#include "../../database/entity/Entity.cpp"
 #include "../../util/logger/Logger.h"
+#include "../ActionListener.h"
 
-class DBManager;
+#include "../../database/dbmanager/DBManager.h"
 
-class SelectedDatabaseActionListener {
+class SelectedDatabaseActionListener: ActionListener {
 public:
 	SelectedDatabaseActionListener(int currentDB);
 	virtual ~SelectedDatabaseActionListener();
-	static void invoke();
+	static void invoke(int currentDB);
 
 private:
 	DBManager* dbManager;
 	Logger log;
 	int currentDB;
+	Database<People> database;
 
 	void listen(char action);
 	void upArrowAction();

@@ -37,23 +37,27 @@ private:
 };
 
 inline int DBManager_test::start() {
-	if (!thatCanGetInstance())
+	try {
+		if (!thatCanGetInstance())
+			exit(0);
+
+		if (!thatCanCreateDatabase())
+			exit(0);
+
+		if (!thatCanRemoveDatabase())
+			exit(0);
+
+		if (!thatCanUpdateDatabase())
+			exit(0);
+
+		if (!thatCanPersistDatabase())
+			exit(0);
+
+		logger.print("DBManager_test finished correctly.");
+	} catch (...) {
+		logger.printErr("DBManager_test something went wrong.");
 		exit(0);
-
-	if (!thatCanCreateDatabase())
-		exit(0);
-
-	if (!thatCanRemoveDatabase())
-		exit(0);
-
-	if (!thatCanUpdateDatabase())
-		exit(0);
-
-	if (!thatCanPersistDatabase())
-		exit(0);
-
-	logger.print("DBManager_test finished correctly.");
-
+	}
 	return 0;
 }
 
@@ -184,10 +188,10 @@ inline bool DBManager_test::thatCanPersistDatabase() {
 			if (beforeSave[i] != afterLoad[i])
 				return false;
 
-		logger.print("DBManager_test.thatCanPersistDatabase() finished correctly.");
 		dbManager.load();
+		logger.print("DBManager_test.thatCanPersistDatabase() finished correctly.");
 		return true;
-	} catch (int e) {
+	} catch (...) {
 		logger.printErr("DBManager_test.thatCanPersistDatabase() failed.");
 		return false;
 	}

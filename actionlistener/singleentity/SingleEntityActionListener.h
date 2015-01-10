@@ -8,18 +8,23 @@
 #ifndef ACTIONLISTENER_SINGLEENTITY_SINGLEENTITYACTIONLISTENER_H_
 #define ACTIONLISTENER_SINGLEENTITY_SINGLEENTITYACTIONLISTENER_H_
 
+#include "../../database/database/Database.cpp"
+#include "../../database/entity/Entity.cpp"
 #include "../../util/logger/Logger.h"
-#include "../../database/dbmanager/DBManager.h"
+#include "../ActionListener.h"
 
-class SingleEntityActionListener {
+class DBManager;
+
+class SingleEntityActionListener: ActionListener {
 public:
 	SingleEntityActionListener(int currentDB);
 	virtual ~SingleEntityActionListener();
-	static void invoke();
+	static void invoke(int currentDB);
 
 private:
 	DBManager* dbManager;
 	Logger log;
+	Database<People> database;
 	int currentDB;
 
 	void listen(char action);

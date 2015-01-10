@@ -137,7 +137,7 @@ void MainActionListener::createDBAction()
 
 void MainActionListener::openDBAction()
 {
-	SelectedDatabaseActionListener::invoke();
+	SelectedDatabaseActionListener::invoke(currentDB);
 	view.showMainView();
 }
 
@@ -154,9 +154,4 @@ void MainActionListener::exitAction()
 		saveAction();
 
 	running = false;
-}
-
-bool MainActionListener::isRunning() const
-{
-	return running;
 }
