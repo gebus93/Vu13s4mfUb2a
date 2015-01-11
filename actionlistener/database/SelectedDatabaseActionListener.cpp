@@ -109,8 +109,10 @@ void SelectedDatabaseActionListener::createEntityAction() {
 
 void SelectedDatabaseActionListener::saveAction() {
 	bool confirmed = view.showSaveView();
-	if (confirmed)
-		dbManager->save();
+	if (confirmed) {
+		dbManager->update(currentDB, database);
+		database.setModified(false);
+	}
 
 	view.showMainView();
 }
@@ -121,6 +123,7 @@ void SelectedDatabaseActionListener::saveAsAction() {
 		database.setFileName(dbName);
 		dbManager->add(database);
 		dbManager->save();
+		database.setModified(false);
 		view.setDbName(dbName);
 	}
 	getkey();

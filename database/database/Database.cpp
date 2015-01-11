@@ -48,6 +48,10 @@ public:
 		return !(*this == other);
 	}
 
+	void setModified(bool modified) {
+		this->modified = modified;
+	}
+
 protected:
 	bool modified;
 	string fileName;
