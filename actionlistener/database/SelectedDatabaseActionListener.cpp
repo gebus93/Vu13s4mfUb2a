@@ -84,6 +84,20 @@ void SelectedDatabaseActionListener::downArrowAction() {
 }
 
 void SelectedDatabaseActionListener::deleteEntityAction() {
+	if (database.getRowsCount() == 0)
+		return;
+
+	bool confirmed = view.confirmDeleteView();
+
+	if (confirmed) {
+		database.remove(currentEntity);
+		view.setRows(database.getRows());
+	}
+
+	view.showMainView();
+
+	if (currentEntity == database.getRowsCount())
+		view.setCurrentEntity(--currentEntity);
 }
 
 void SelectedDatabaseActionListener::createEntityAction() {

@@ -96,6 +96,9 @@ void MainActionListener::downArrowAction() {
 }
 
 void MainActionListener::deleteDBAction() {
+	if (dbManager->count() == 0)
+		return;
+
 	bool confirmed = view.confirmDeleteView();
 	if (confirmed) {
 		dbManager->remove(currentDB);
