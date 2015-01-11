@@ -38,9 +38,6 @@ private:
 	void pressEnterToAccept(int lineNumber);
 	void printRowWithDatabase(int lineNumber, int index);
 	void showDatabaseList();
-	void showReturnSubMenu();
-	void showInputFieldBackground(const int FIELD_LENGTH);
-	bool confirmationSubView(const string& confirmation);
 };
 
 #endif /* VIEW_MAIN_MAINVIEW_H_ */

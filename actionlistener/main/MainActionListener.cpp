@@ -131,6 +131,7 @@ void MainActionListener::createDBAction() {
 
 void MainActionListener::openDBAction() {
 	SelectedDatabaseActionListener::invoke(currentDB);
+	view.setDatabaseList(dbManager->getAll());
 	view.showMainView();
 }
 

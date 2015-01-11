@@ -24,7 +24,6 @@ SelectedDatabaseActionListener::SelectedDatabaseActionListener(int currentDB) {
 
 	view.setDbName(database.getFileName());
 	view.setRows(database.getRows());
-	cls();
 	view.showMainView();
 }
 
@@ -61,6 +60,11 @@ void SelectedDatabaseActionListener::listen(char action) {
 	case KEY_DELETE:
 		log.print("Wybrana akcja = db.deleteEntityAction()");
 		deleteEntityAction();
+		return;
+
+	case KEY_F2:
+		log.print("Wybrana akcja = db.saveAsAction()");
+		saveAsAction();
 		return;
 	}
 }
@@ -104,12 +108,36 @@ void SelectedDatabaseActionListener::createEntityAction() {
 }
 
 void SelectedDatabaseActionListener::saveAction() {
+	bool confirmed = view.showSaveView();
+	if (confirmed)
+		dbManager->save();
+
+	view.showMainView();
 }
 
 void SelectedDatabaseActionListener::saveAsAction() {
+	string dbName = view.showSaveAsView();
+	if (dbName.length() > 0) {
+		database.setFileName(dbName);
+		dbManager->add(database);
+		dbManager->save();
+		view.setDbName(dbName);
+	}
+	getkey();
+	view.showMainView();
 }
 
 void SelectedDatabaseActionListener::escapeAction() {
+	bool confirmed = view.showExitView();
+
+	if (!confirmed) {
+		view.showMainView();
+		return;
+	}
+
+	if (database.isModified() && view.showSaveView())
+		dbManager->save();
+
 	running = false;
 }
 

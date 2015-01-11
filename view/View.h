@@ -24,6 +24,10 @@ public:
 protected:
 	void printMenu(vector<string> menu);
 	void printButton(const char* label, bool confirmed);
+	bool confirmationSubView(const string& confirmation);
+	string getDatabaseName();
+	void showInputFieldBackground(const int FIELD_LENGTH);
+	void showReturnSubMenu();
 };
 
 #endif /* VIEW_VIEW_H_ */

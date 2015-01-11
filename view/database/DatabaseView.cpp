@@ -14,14 +14,14 @@
 #include "../../util/utils.h"
 
 DatabaseView::DatabaseView() {
-	// TODO Auto-generated constructor stub
-
+	currentEntity = 0;
 }
 
 void DatabaseView::showMainMenu() {
 	std::vector<std::string> menuItems;
 	menuItems.push_back("Dodaj [N]");
-	menuItems.push_back("Edytuj [Enter]");
+	menuItems.push_back("Zapisz [S]");
+	menuItems.push_back("Zapisz jako [F2]");
 	menuItems.push_back("Usun [Del]");
 	menuItems.push_back("Powrot [Esc]");
 	locate(1, 1);
@@ -68,6 +68,7 @@ void DatabaseView::printBorderOfEntityTable() {
 }
 
 void DatabaseView::showMainView() {
+	cls();
 	showMainMenu();
 	showSubMenu();
 
@@ -96,16 +97,29 @@ void DatabaseView::showMainView() {
 	}
 }
 
-bool DatabaseView::showSaveAsView() {
-	return true;
+string DatabaseView::showSaveAsView() {
+	cls();
+	showMainMenu();
+	showReturnSubMenu();
+
+	return getDatabaseName();
+}
+
+bool DatabaseView::showSaveView() {
+	string confirmation = "Czy chcesz zapisac wprowadzone zmiany?";
+	return confirmationSubView(confirmation);
 }
 
 bool DatabaseView::showExitView() {
-	return true;
+	string message = "Czy na pewno chcesz wyjsc z bazy danych?";
+
+	return confirmationSubView(message);
 }
 
 bool DatabaseView::confirmDeleteView() {
-	return false;
+	string confirmation = "Czy na pewno chcesz usunac wpis nr "
+			+ numberToString(currentEntity) + "?";
+	return confirmationSubView(confirmation);
 }
 
 void DatabaseView::setDbName(const string& dbName) {

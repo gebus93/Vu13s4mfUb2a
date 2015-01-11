@@ -21,7 +21,8 @@ public:
 	DatabaseView();
 
 	void showMainView();
-	bool showSaveAsView();
+	bool showSaveView();
+	string showSaveAsView();
 	bool showExitView();
 
 	bool confirmDeleteView();
