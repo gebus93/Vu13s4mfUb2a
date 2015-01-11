@@ -35,7 +35,7 @@ private:
 	void saveAction();
 	void saveAsAction();
 	void escapeAction();
-	void openEntityInSingleView();
+//	void openEntityInSingleView();
 };
 
 #endif /* ACTIONLISTENER_DATABASE_SELECTEDDATABASEACTIONLISTENER_H_ */

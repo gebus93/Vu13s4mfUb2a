@@ -27,6 +27,7 @@ SelectedDatabaseActionListener::~SelectedDatabaseActionListener()
 void SelectedDatabaseActionListener::invoke(int currentDB) {
 	char action = 0;
 	SelectedDatabaseActionListener listener(currentDB);
+
 	do {
 		action = getkey();
 		listener.listen(action);
@@ -69,8 +70,8 @@ void SelectedDatabaseActionListener::escapeAction()
 	running = false;
 }
 
-void SelectedDatabaseActionListener::openEntityInSingleView()
-{
-	SingleEntityActionListener::invoke(currentDB);
-	// TODO AFTER_INVOKE showDBView();
-}
+//void SelectedDatabaseActionListener::openEntityInSingleView()
+//{
+//	SingleEntityActionListener::invoke(currentDB);
+//	// TODO AFTER_INVOKE showDBView();
+//}
