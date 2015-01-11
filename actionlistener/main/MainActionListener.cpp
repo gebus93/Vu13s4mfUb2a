@@ -16,8 +16,7 @@
 
 using namespace rlutil;
 
-MainActionListener::MainActionListener()
-{
+MainActionListener::MainActionListener() {
 	dbManager = &DBManager::getInstance();
 	currentDB = 0;
 	running = true;
@@ -27,12 +26,10 @@ MainActionListener::MainActionListener()
 	view.showMainView();
 }
 
-MainActionListener::~MainActionListener()
-{
+MainActionListener::~MainActionListener() {
 }
 
-void MainActionListener::invoke()
-{
+void MainActionListener::invoke() {
 	char action = 0;
 	MainActionListener listener;
 	do {
@@ -80,8 +77,7 @@ void MainActionListener::listen(char action) {
 	}
 }
 
-void MainActionListener::upArrowAction()
-{
+void MainActionListener::upArrowAction() {
 	if (currentDB - 1 >= 0) {
 		currentDB--;
 		view.setCurrentDb(currentDB);
@@ -90,8 +86,7 @@ void MainActionListener::upArrowAction()
 	log.print("currentDB = " + numberToString(currentDB));
 }
 
-void MainActionListener::downArrowAction()
-{
+void MainActionListener::downArrowAction() {
 	if (currentDB + 1 < dbManager->count()) {
 		currentDB++;
 		view.setCurrentDb(currentDB);
@@ -100,11 +95,9 @@ void MainActionListener::downArrowAction()
 	log.print("currentDB = " + numberToString(currentDB));
 }
 
-void MainActionListener::deleteDBAction()
-{
+void MainActionListener::deleteDBAction() {
 	bool confirmed = view.confirmDeleteView();
-	if (confirmed)
-	{
+	if (confirmed) {
 		dbManager->remove(currentDB);
 		view.setDatabaseList(dbManager->getAll());
 	}
@@ -115,8 +108,7 @@ void MainActionListener::deleteDBAction()
 		view.setCurrentDb(--currentDB);
 }
 
-void MainActionListener::saveAction()
-{
+void MainActionListener::saveAction() {
 	bool confirmed = view.showSaveView();
 	if (confirmed)
 		dbManager->save();
@@ -124,8 +116,7 @@ void MainActionListener::saveAction()
 	view.showMainView();
 }
 
-void MainActionListener::createDBAction()
-{
+void MainActionListener::createDBAction() {
 	std::string dbName = view.showCreateView();
 	if (dbName.length() > 0) {
 		dbManager->add(dbName);
@@ -135,14 +126,12 @@ void MainActionListener::createDBAction()
 	view.showMainView();
 }
 
-void MainActionListener::openDBAction()
-{
+void MainActionListener::openDBAction() {
 	SelectedDatabaseActionListener::invoke(currentDB);
 	view.showMainView();
 }
 
-void MainActionListener::exitAction()
-{
+void MainActionListener::exitAction() {
 	bool confirmed = view.showExitView();
 
 	if (!confirmed) {

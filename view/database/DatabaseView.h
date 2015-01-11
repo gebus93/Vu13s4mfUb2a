@@ -30,9 +30,16 @@ public:
 
 	void setRows(const vector<People>& rows);
 
+	void setCurrentEntity(int currentEntity);
+
 private:
 	string dbName;
 	vector<People> rows;
+	int currentEntity;
+
+	void showMainMenu();
+	void showSubMenu();
+	void printBorderOfEntityTable();
 };
 
 #endif /* DATABASEVIEW_H_ */

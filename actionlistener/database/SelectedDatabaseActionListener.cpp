@@ -7,21 +7,28 @@
 
 #include "SelectedDatabaseActionListener.h"
 
+#include <string>
 #include <vector>
 
 #include "../../libraries/rlutil/rlutil.h"
-#include "../singleentity/SingleEntityActionListener.h"
+#include "../../util/utils.h"
 
 using namespace rlutil;
 
 SelectedDatabaseActionListener::SelectedDatabaseActionListener(int currentDB) {
 	this->currentDB = currentDB;
+	this->currentEntity = 0;
+
 	dbManager = &DBManager::getInstance();
 	database = dbManager->get(currentDB);
+
+	view.setDbName(database.getFileName());
+	view.setRows(database.getRows());
+	cls();
+	view.showMainView();
 }
 
-SelectedDatabaseActionListener::~SelectedDatabaseActionListener()
-{
+SelectedDatabaseActionListener::~SelectedDatabaseActionListener() {
 }
 
 void SelectedDatabaseActionListener::invoke(int currentDB) {
@@ -37,36 +44,58 @@ void SelectedDatabaseActionListener::invoke(int currentDB) {
 void SelectedDatabaseActionListener::listen(char action) {
 	switch (action) {
 	case KEY_ESCAPE:
+		log.print("Wybrana akcja = db.escapeAction()");
 		escapeAction();
+		return;
+
+	case KEY_UP:
+		log.print("Wybrana akcja = db.upArrowAction()");
+		upArrowAction();
+		return;
+
+	case KEY_DOWN:
+		log.print("Wybrana akcja = db.downArrowAction()");
+		downArrowAction();
+		return;
+
+	case KEY_DELETE:
+		log.print("Wybrana akcja = db.deleteEntityAction()");
+		deleteEntityAction();
+		return;
 	}
 }
 
-void SelectedDatabaseActionListener::upArrowAction()
-{
+void SelectedDatabaseActionListener::upArrowAction() {
+	if (currentEntity - 1 >= 0) {
+		currentEntity--;
+		view.setCurrentEntity(currentEntity);
+	}
+
+	log.print("currentEntity = " + numberToString(currentEntity));
 }
 
-void SelectedDatabaseActionListener::downArrowAction()
-{
+void SelectedDatabaseActionListener::downArrowAction() {
+	if (currentEntity + 1 < database.getRowsCount()) {
+		currentEntity++;
+		view.setCurrentEntity(currentEntity);
+	}
+
+	log.print("currentEntity = " + numberToString(currentEntity));
 }
 
-void SelectedDatabaseActionListener::deleteEntityAction()
-{
+void SelectedDatabaseActionListener::deleteEntityAction() {
 }
 
-void SelectedDatabaseActionListener::createEntityAction()
-{
+void SelectedDatabaseActionListener::createEntityAction() {
 }
 
-void SelectedDatabaseActionListener::saveAction()
-{
+void SelectedDatabaseActionListener::saveAction() {
 }
 
-void SelectedDatabaseActionListener::saveAsAction()
-{
+void SelectedDatabaseActionListener::saveAsAction() {
 }
 
-void SelectedDatabaseActionListener::escapeAction()
-{
+void SelectedDatabaseActionListener::escapeAction() {
 	running = false;
 }
 

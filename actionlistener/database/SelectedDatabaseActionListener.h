@@ -11,6 +11,7 @@
 #include "../../database/database/Database.cpp"
 #include "../../database/entity/Entity.cpp"
 #include "../../util/logger/Logger.h"
+#include "../../view/database/DatabaseView.h"
 #include "../ActionListener.h"
 
 #include "../../database/dbmanager/DBManager.h"
@@ -25,6 +26,8 @@ private:
 	DBManager* dbManager;
 	Logger log;
 	int currentDB;
+	int currentEntity;
+	DatabaseView view;
 	Database<People> database;
 
 	void listen(char action);
