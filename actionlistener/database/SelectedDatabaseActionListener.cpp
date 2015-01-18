@@ -125,6 +125,8 @@ void SelectedDatabaseActionListener::saveAsAction() {
 		dbManager->save();
 		database.setModified(false);
 		view.setDbName(dbName);
+
+		currentDB = dbManager->count() - 1;
 	}
 	getkey();
 	view.showMainView();
@@ -143,9 +145,3 @@ void SelectedDatabaseActionListener::escapeAction() {
 
 	running = false;
 }
-
-//void SelectedDatabaseActionListener::openEntityInSingleView()
-//{
-//	SingleEntityActionListener::invoke(currentDB);
-//	// TODO AFTER_INVOKE showDBView();
-//}

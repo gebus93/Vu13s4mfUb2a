@@ -84,7 +84,7 @@ void DatabaseView::showMainView() {
 	locate(3, 5);
 	printf("Aktualna baza: %s", dbName.c_str());
 	locate(3, 7);
-	printf("Rekordow: %d", rows.size());
+	printf("Rekordow: %d", (int) rows.size());
 
 	locate(3, 9);
 
