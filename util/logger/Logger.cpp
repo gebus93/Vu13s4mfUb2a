@@ -69,3 +69,8 @@ Logger::~Logger() {
 		fclose(err);
 }
 
+Logger& Logger::getInstance()
+{
+	static Logger instance;
+	return instance;
+}

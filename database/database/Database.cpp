@@ -161,6 +161,7 @@ inline void Database<T>::setRows(const vector<T>& rows) {
 template<typename T>
 inline void Database<T>::addRow(T item) {
 	rows.push_back(item);
+	this->modified = true;
 }
 
 template<typename T>

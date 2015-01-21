@@ -133,3 +133,108 @@ void DatabaseView::setRows(const vector<People>& rows) {
 void DatabaseView::setCurrentEntity(int currentEntity) {
 	this->currentEntity = currentEntity;
 }
+
+void DatabaseView::showLabelForEntity(const char* label, const int fieldSize, int line) {
+	locate(3, line);
+	printf("%10s:", label);
+}
+
+string DatabaseView::readString(int line, const int FIELD_LENGTH) {
+	locate(15, line);
+	showInputFieldBackground(FIELD_LENGTH);
+	locate(15, line);
+	string text = inputText(FIELD_LENGTH);
+
+	locate(15, line);
+	setColors( FONT_COLOR_WHITE, 0);
+
+	fillLine(' ', FIELD_LENGTH);
+	locate(15, line);
+	printStdString(text);
+
+	return text;
+}
+
+int DatabaseView::readInt(int line, const int FIELD_LENGTH, int maxNumber) {
+	locate(15, line);
+	showInputFieldBackground(FIELD_LENGTH);
+	locate(15, line);
+	int number = inputNumber(maxNumber);
+
+	locate(15, line);
+	setColors( FONT_COLOR_WHITE, 0);
+
+	fillLine(' ', FIELD_LENGTH);
+	locate(15, line);
+	printf("%d", number);
+
+	return number;
+}
+
+void DatabaseView::entityCreatedCorrectly()
+{
+	cls();
+	showMainMenu();
+	showReturnSubMenu();
+
+	setColors(FONT_COLOR_LIGHT_GRAY, 0);
+	string notification = "Operacja zostala zatwierdzona.";
+	centerHorizontal(trows() / 2 - 1, notification.size());
+	printStdString(notification);
+	string message = "Encja zostala dodana do bazy danych.";
+	centerHorizontal(trows() / 2 + 1, message.size());
+	printStdString(message);
+}
+
+People DatabaseView::showCreateEntityView()
+{
+	cls();
+	showMainMenu();
+	showReturnSubMenu();
+	int line = 5;
+	const int FIELD_LENGTH = 20;
+
+	setColors( FONT_COLOR_WHITE, 0);
+
+	showLabelForEntity("Imie", FIELD_LENGTH, line);
+	showLabelForEntity("Nazwisko", FIELD_LENGTH, ++line);
+	showLabelForEntity("Wiek", FIELD_LENGTH, ++line);
+	showLabelForEntity("Wzost", FIELD_LENGTH, ++line);
+	showLabelForEntity("Waga", FIELD_LENGTH, ++line);
+
+	try {
+		People person;
+		line = 5;
+
+		string name = readString(line, FIELD_LENGTH);
+		person.setName(name);
+
+		string surname = readString(++line, FIELD_LENGTH);
+		person.setSurname(surname);
+
+		int age = readInt(++line, FIELD_LENGTH, 150);
+		person.setAge(age);
+
+		int height = readInt(++line, FIELD_LENGTH, 250);
+		person.setHeight(height);
+
+		int weight = readInt(++line, FIELD_LENGTH, 350);
+		person.setWeight(weight);
+
+		entityCreatedCorrectly();
+
+		return person;
+
+	} catch (int e) {
+		setColors( FONT_COLOR_WHITE, 0);
+		cls();
+		showMainMenu();
+		showReturnSubMenu();
+		printError("Operacja zostala anulowana.");
+	}
+
+	setColors(FONT_COLOR_LIGHT_GRAY, 0);
+
+	People person;
+	return person;
+}

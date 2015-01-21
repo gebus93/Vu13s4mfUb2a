@@ -23,6 +23,7 @@ public:
 	void showMainView();
 	bool showSaveView();
 	string showSaveAsView();
+	People showCreateEntityView();
 	bool showExitView();
 
 	bool confirmDeleteView();
@@ -41,6 +42,10 @@ private:
 	void showMainMenu();
 	void showSubMenu();
 	void printBorderOfEntityTable();
+	void showLabelForEntity(const char* label, const int fieldSize, int line);
+	string readString(int line, const int FIELD_LENGTH);
+	int readInt(int line, const int FIELD_LENGTH, int maxNumber = 1000000);
+	void entityCreatedCorrectly();
 };
 
 #endif /* DATABASEVIEW_H_ */

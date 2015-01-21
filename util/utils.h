@@ -12,6 +12,7 @@
 void setColors(WORD fontColor, WORD bgColor);
 
 std::string inputText(int maxLength = 255);
+int inputNumber(int maxValue = 1000000000);
 
 void center(int length);
 void centerHorizontal(int y, int length);

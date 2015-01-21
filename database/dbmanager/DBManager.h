@@ -8,12 +8,12 @@
 #ifndef DATABASE_DBMANAGER_DBMANAGER_H_
 #define DATABASE_DBMANAGER_DBMANAGER_H_
 
+#include <string>
 #include <vector>
-
 #include <algorithm>
 #include <fstream>
-#include <string>
 
+#include "../../util/logger/Logger.h"
 #include "../database/Database.cpp"
 #include "../entity/Entity.cpp"
 
@@ -39,6 +39,7 @@ public:
 private:
 	vector<Database<People> > databases;
 	bool modified;
+	Logger* logger;
 	DBManager();
 };
 

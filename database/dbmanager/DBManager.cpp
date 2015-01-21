@@ -81,9 +81,16 @@ void DBManager::load(const string& dbname) {
 	std::ifstream file(dbname.c_str(), std::ios::in | std::ifstream::binary);
 
 	if (!file.is_open())
+	{
+		logger->printErr("Nie udalo sie otworzyc pliku z baza danych - " + dbname);
 		return;
+	}
+
+	logger->print("Udalo sie otworzyc plik z baza danych: " + dbname);
 
 	databases.clear();
+
+	logger->print("Udalo sie wyczyscic dotychczasowa liste baz danych.");
 
 	int size;
 	file.read(reinterpret_cast<char*>(&size), sizeof(size));
@@ -99,7 +106,12 @@ void DBManager::load(const string& dbname) {
 		const Database<People> databasePeople = Database<People>(fileName, temp);
 		databases.push_back(databasePeople);
 	}
+
+	logger->print("Udalo sie wczytac liste baz danych.");
+
 	file.close();
+
+	logger->print("Udalo sie zamknac plik z baza danych.");
 }
 
 void DBManager::load() {
@@ -116,6 +128,7 @@ DBManager& DBManager::getInstance() {
 
 DBManager::DBManager() {
 	modified = false;
+	logger = &Logger::getInstance();
 	load();
 }
 

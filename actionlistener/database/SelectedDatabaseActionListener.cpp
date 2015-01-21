@@ -16,6 +16,7 @@
 using namespace rlutil;
 
 SelectedDatabaseActionListener::SelectedDatabaseActionListener(int currentDB) {
+	log = &Logger::getInstance();
 	this->currentDB = currentDB;
 	this->currentEntity = 0;
 
@@ -43,27 +44,37 @@ void SelectedDatabaseActionListener::invoke(int currentDB) {
 void SelectedDatabaseActionListener::listen(char action) {
 	switch (action) {
 	case KEY_ESCAPE:
-		log.print("Wybrana akcja = db.escapeAction()");
+		log->print("Wybrana akcja = db.escapeAction()");
 		escapeAction();
 		return;
 
 	case KEY_UP:
-		log.print("Wybrana akcja = db.upArrowAction()");
+		log->print("Wybrana akcja = db.upArrowAction()");
 		upArrowAction();
 		return;
 
 	case KEY_DOWN:
-		log.print("Wybrana akcja = db.downArrowAction()");
+		log->print("Wybrana akcja = db.downArrowAction()");
 		downArrowAction();
 		return;
 
 	case KEY_DELETE:
-		log.print("Wybrana akcja = db.deleteEntityAction()");
+		log->print("Wybrana akcja = db.deleteEntityAction()");
 		deleteEntityAction();
 		return;
 
+	case 'n':
+		log->print("Wybrana akcja = db.createEntityAction()");
+		createEntityAction();
+		return;
+
+	case 's':
+		log->print("Wybrana akcja = db.saveAction()");
+		saveAction();
+		return;
+
 	case KEY_F2:
-		log.print("Wybrana akcja = db.saveAsAction()");
+		log->print("Wybrana akcja = db.saveAsAction()");
 		saveAsAction();
 		return;
 	}
@@ -75,7 +86,7 @@ void SelectedDatabaseActionListener::upArrowAction() {
 		view.setCurrentEntity(currentEntity);
 	}
 
-	log.print("currentEntity = " + numberToString(currentEntity));
+	log->print("currentEntity = " + numberToString(currentEntity));
 }
 
 void SelectedDatabaseActionListener::downArrowAction() {
@@ -84,7 +95,7 @@ void SelectedDatabaseActionListener::downArrowAction() {
 		view.setCurrentEntity(currentEntity);
 	}
 
-	log.print("currentEntity = " + numberToString(currentEntity));
+	log->print("currentEntity = " + numberToString(currentEntity));
 }
 
 void SelectedDatabaseActionListener::deleteEntityAction() {
@@ -105,6 +116,22 @@ void SelectedDatabaseActionListener::deleteEntityAction() {
 }
 
 void SelectedDatabaseActionListener::createEntityAction() {
+	People person = view.showCreateEntityView();
+
+	if (!person.isEmpty())
+	{
+		database.addRow(person);
+
+		view.setRows(database.getRows());
+
+		log->print("Encja nie jest pusta");
+		log->print("Aktualny rozmiar bazy danych: " + numberToString(database.getRowsCount()));
+	}
+	else
+		log->print("Encja jest pusta");
+
+	view.showMainView();
+
 }
 
 void SelectedDatabaseActionListener::saveAction() {
@@ -112,6 +139,7 @@ void SelectedDatabaseActionListener::saveAction() {
 	if (confirmed) {
 		dbManager->update(currentDB, database);
 		database.setModified(false);
+		dbManager->save();
 	}
 
 	view.showMainView();
@@ -140,8 +168,11 @@ void SelectedDatabaseActionListener::escapeAction() {
 		return;
 	}
 
-	if (database.isModified() && view.showSaveView())
+	if (database.isModified() && view.showSaveView()) {
+		dbManager->update(currentDB, database);
+		database.setModified(false);
 		dbManager->save();
+	}
 
 	running = false;
 }

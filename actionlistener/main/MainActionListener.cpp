@@ -17,6 +17,7 @@
 using namespace rlutil;
 
 MainActionListener::MainActionListener() {
+	log = &Logger::getInstance();
 	dbManager = &DBManager::getInstance();
 	currentDB = 0;
 	running = true;
@@ -41,37 +42,37 @@ void MainActionListener::invoke() {
 void MainActionListener::listen(char action) {
 	switch (action) {
 	case KEY_UP:
-		log.print("Wybrana akcja = upArrowAction()");
+		log->print("Wybrana akcja = upArrowAction()");
 		upArrowAction();
 		return;
 
 	case KEY_DOWN:
-		log.print("Wybrana akcja = downArrowAction()");
+		log->print("Wybrana akcja = downArrowAction()");
 		downArrowAction();
 		return;
 
 	case KEY_DELETE:
-		log.print("Wybrana akcja = deleteDBAction()");
+		log->print("Wybrana akcja = deleteDBAction()");
 		deleteDBAction();
 		return;
 
 	case KEY_ENTER:
-		log.print("Wybrana akcja = openDBAction()");
+		log->print("Wybrana akcja = openDBAction()");
 		openDBAction();
 		return;
 
 	case 's':
-		log.print("Wybrana akcja = saveAction()");
+		log->print("Wybrana akcja = saveAction()");
 		saveAction();
 		return;
 
 	case 'n':
-		log.print("Wybrana akcja = createDBAction()");
+		log->print("Wybrana akcja = createDBAction()");
 		createDBAction();
 		return;
 
 	case 'q':
-		log.print("Wybrana akcja = exitAction()");
+		log->print("Wybrana akcja = exitAction()");
 		exitAction();
 		return;
 	}
@@ -83,7 +84,7 @@ void MainActionListener::upArrowAction() {
 		view.setCurrentDb(currentDB);
 	}
 
-	log.print("currentDB = " + numberToString(currentDB));
+	log->print("currentDB = " + numberToString(currentDB));
 }
 
 void MainActionListener::downArrowAction() {
@@ -92,7 +93,7 @@ void MainActionListener::downArrowAction() {
 		view.setCurrentDb(currentDB);
 	}
 
-	log.print("currentDB = " + numberToString(currentDB));
+	log->print("currentDB = " + numberToString(currentDB));
 }
 
 void MainActionListener::deleteDBAction() {
@@ -130,8 +131,15 @@ void MainActionListener::createDBAction() {
 }
 
 void MainActionListener::openDBAction() {
+
+	if (currentDB == 0 && dbManager->count() == 0)
+		return;
+
 	SelectedDatabaseActionListener::invoke(currentDB);
 	view.setDatabaseList(dbManager->getAll());
+
+	log->print("Rozmiar modyfikowanej tabeli: " + numberToString((int) dbManager->get(currentDB).getRowsCount()));
+
 	view.showMainView();
 }
 

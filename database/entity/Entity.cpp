@@ -14,6 +14,7 @@ public:
 
 	void setAge(int age) {
 		this->age = age;
+		empty = false;
 	}
 
 	int getHeight() const {
@@ -22,6 +23,7 @@ public:
 
 	void setHeight(int height) {
 		this->height = height;
+		empty = false;
 	}
 
 	const string& getName() const {
@@ -30,6 +32,7 @@ public:
 
 	void setName(const string& name) {
 		this->name = name;
+		empty = false;
 	}
 
 	const string& getSurname() const {
@@ -38,6 +41,7 @@ public:
 
 	void setSurname(const string& surname) {
 		this->surname = surname;
+		empty = false;
 	}
 
 	int getWeight() const {
@@ -46,9 +50,11 @@ public:
 
 	void setWeight(int weight) {
 		this->weight = weight;
+		empty = false;
 	}
 
 	People() {
+		empty = true;
 		createDate = time(0);
 		age = 0;
 		height = 0;
@@ -72,6 +78,11 @@ public:
 		return !(*this == other);
 	}
 
+	bool isEmpty() const
+	{
+		return empty;
+	}
+
 private:
 	string name;
 	string surname;
@@ -79,6 +90,7 @@ private:
 	int height;
 	int weight;
 	unsigned long long int createDate;
+	bool empty;
 };
 
 #endif

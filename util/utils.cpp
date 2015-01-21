@@ -80,7 +80,7 @@ bool isDigit(char c) {
 	return c >= '0' && c <= '9';
 }
 
-int inputNumber(int maxValue = 1000000000) {
+int inputNumber(int maxValue) {
 	char character = 0;
 	int currentIndex = 0;
 	int number = 0;

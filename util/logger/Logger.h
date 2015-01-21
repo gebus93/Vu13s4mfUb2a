@@ -13,7 +13,7 @@
 
 class Logger {
 public:
-	Logger();
+	static Logger& getInstance();
 	void print(std::string s);
 	void printErr(std::string s);
 	virtual ~Logger();
@@ -21,6 +21,7 @@ private:
 	FILE *out;
 	FILE *err;
 	bool debugMode;
+	Logger();
 
 	std::string getDateAndTime();
 };
