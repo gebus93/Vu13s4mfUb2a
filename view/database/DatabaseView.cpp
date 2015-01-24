@@ -15,6 +15,7 @@
 
 DatabaseView::DatabaseView() {
 	currentEntity = 0;
+	lastPageRowsCount = 10;
 }
 
 void DatabaseView::showMainMenu() {
@@ -44,7 +45,6 @@ void DatabaseView::showSubMenu() {
 }
 
 void DatabaseView::printBorderOfEntityTable() {
-	//			printBorderOfEntityTable();
 	int row = 9;
 	int headerBackground = 0;
 	int contentBackground = 0;
@@ -54,10 +54,12 @@ void DatabaseView::printBorderOfEntityTable() {
 	locate(3, row++);
 	printSeparator(6, 4, 12, 22, 7, 10, 7);
 	setColors( FONT_COLOR_WHITE, contentBackground);
-	for (int i = 0, j = rows.size(); i < j; i++, row++) {
+
+	int rowsCount = calculateRowsCount();
+
+	for (int i = 0, j = rowsCount; i < j; i++, row++) {
 		locate(3, row);
-		printf("| %2s | %10s | %20s | %5s | %8s | %5s |", "", "", "", "", "",
-				"");
+		printf("| %2s | %10s | %20s | %5s | %8s | %5s |", "", "", "", "", "", "");
 	}
 	locate(3, row);
 	printSeparator(6, 4, 12, 22, 7, 10, 7);
@@ -82,10 +84,40 @@ void DatabaseView::printEntityRow(int index, int lineNumber) {
 	printf(" %-5d ", personData.getWeight());
 }
 
+int DatabaseView::calculateRowsCount() {
+	int index = (currentEntity / 10) * 10;
+	int rowsCount = rows.size() - index;
+	if (rowsCount > 10)
+		rowsCount = 10;
+
+	return rowsCount;
+}
+
 void DatabaseView::showEntityList()
 {
 	int lineNumber = 11;
-	for (int index = 0, rowsCount = rows.size(); index < rowsCount; ++index, ++lineNumber) {
+
+	int index = (currentEntity / 10) * 10;
+
+	int rowsCount = calculateRowsCount();
+
+	if (lastPageRowsCount != rowsCount) {
+		int i = lastPageRowsCount > rowsCount ? rowsCount : lastPageRowsCount;
+
+		lineNumber += i;
+
+		for (; i <= 10; ++i) {
+			locate(1, lineNumber++);
+			fillLine(' ');
+		}
+
+		printBorderOfEntityTable();
+
+		lineNumber = 11;
+	}
+
+	setColors(FONT_COLOR_GRAY, 0);
+	for (int i = 0; i < rowsCount; ++i, ++index, ++lineNumber) {
 		if (index == currentEntity) {
 			setColors(FONT_COLOR_WHITE, 0);
 			printEntityRow(index, lineNumber);
@@ -94,6 +126,9 @@ void DatabaseView::showEntityList()
 			printEntityRow(index, lineNumber);
 		}
 	}
+
+	lastPageRowsCount = rowsCount;
+	locate(1, 1);
 }
 
 void DatabaseView::showMainView() {

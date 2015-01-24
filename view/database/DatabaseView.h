@@ -38,6 +38,7 @@ private:
 	string dbName;
 	vector<People> rows;
 	int currentEntity;
+	int lastPageRowsCount;
 
 	void showMainMenu();
 	void showSubMenu();
@@ -48,6 +49,7 @@ private:
 	void entityCreatedCorrectly();
 	void printEntityRow(int index, int lineNumber);
 	void showEntityList();
+	int calculateRowsCount();
 };
 
 #endif /* DATABASEVIEW_H_ */
