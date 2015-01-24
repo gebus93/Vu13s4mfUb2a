@@ -38,6 +38,10 @@ private:
 	void saveAction();
 	void saveAsAction();
 	void escapeAction();
+	void sortByDefaultOrder();
+	void sortByAge();
+	void sortBySurname();
+	void findBySurname();
 };
 
 #endif /* ACTIONLISTENER_DATABASE_SELECTEDDATABASEACTIONLISTENER_H_ */

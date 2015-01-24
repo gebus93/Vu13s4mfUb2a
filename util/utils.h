@@ -30,7 +30,7 @@ void printSeparatorForThreeColumns(int length1, int length2, int length3);
 std::string numberToString(int n);
 
 bool compareBySurname(People a, People b);
-bool compareByName(People a, People b);
+bool compareByAge(People a, People b);
 bool compareByDefaultCriteria(People a, People b);
 
 #endif // UTILS_H_INCLUDED

@@ -47,6 +47,7 @@ private:
 	int readInt(int line, const int FIELD_LENGTH, int maxNumber = 1000000);
 	void entityCreatedCorrectly();
 	void printEntityRow(int index, int lineNumber);
+	void showEntityList();
 };
 
 #endif /* DATABASEVIEW_H_ */

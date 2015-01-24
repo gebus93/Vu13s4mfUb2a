@@ -82,6 +82,20 @@ void DatabaseView::printEntityRow(int index, int lineNumber) {
 	printf(" %-5d ", personData.getWeight());
 }
 
+void DatabaseView::showEntityList()
+{
+	int lineNumber = 11;
+	for (int index = 0, rowsCount = rows.size(); index < rowsCount; ++index, ++lineNumber) {
+		if (index == currentEntity) {
+			setColors(FONT_COLOR_WHITE, 0);
+			printEntityRow(index, lineNumber);
+			setColors(FONT_COLOR_GRAY, 0);
+		} else {
+			printEntityRow(index, lineNumber);
+		}
+	}
+}
+
 void DatabaseView::showMainView() {
 	clearScreen();
 	showMainMenu();
@@ -104,18 +118,7 @@ void DatabaseView::showMainView() {
 		setColors(FONT_COLOR_LIGHT_GRAY, 0);
 	}
 
-	int lineNumber = 11;
-
-	for (int index = 0, rowsCount = rows.size(); index < rowsCount; ++index, ++lineNumber) {
-		if (index == currentEntity) {
-			setColors(FONT_COLOR_WHITE, 0);
-			printEntityRow(index, lineNumber);
-			setColors(FONT_COLOR_GRAY, 0);
-		} else {
-			printEntityRow(index, lineNumber);
-		}
-	}
-
+	showEntityList();
 }
 
 string DatabaseView::showSaveAsView() {
@@ -138,8 +141,7 @@ bool DatabaseView::showExitView() {
 }
 
 bool DatabaseView::confirmDeleteView() {
-	string confirmation = "Czy na pewno chcesz usunac wpis nr "
-			+ numberToString(currentEntity) + "?";
+	string confirmation = "Czy na pewno chcesz usunac wpis nr " + numberToString(currentEntity + 1) + "?";
 	return confirmationSubView(confirmation);
 }
 
@@ -153,6 +155,9 @@ void DatabaseView::setRows(const vector<People>& rows) {
 
 void DatabaseView::setCurrentEntity(int currentEntity) {
 	this->currentEntity = currentEntity;
+
+	if (rows.size() > 0)
+		showEntityList();
 }
 
 void DatabaseView::showLabelForEntity(const char* label, const int fieldSize, int line) {

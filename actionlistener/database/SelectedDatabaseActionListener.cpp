@@ -7,6 +7,7 @@
 
 #include "SelectedDatabaseActionListener.h"
 
+#include<algorithm>
 #include <string>
 #include <vector>
 
@@ -46,13 +47,54 @@ void SelectedDatabaseActionListener::invoke(int currentDB) {
 	} while (listener.isRunning());
 }
 
+void SelectedDatabaseActionListener::sortByDefaultOrder()
+{
+	vector<People> rows = database.getRows();
+	sort(rows.begin(), rows.end(), compareByDefaultCriteria);
+
+	database.setRows(rows);
+
+	view.setCurrentEntity(0);
+	view.setRows(rows);
+	view.showMainView();
+}
+
+void SelectedDatabaseActionListener::sortByAge()
+{
+	vector<People> rows = database.getRows();
+	sort(rows.begin(), rows.end(), compareByAge);
+
+	database.setRows(rows);
+
+	view.setCurrentEntity(0);
+	view.setRows(rows);
+	view.showMainView();
+}
+
+void SelectedDatabaseActionListener::sortBySurname()
+{
+	vector<People> rows = database.getRows();
+	sort(rows.begin(), rows.end(), compareBySurname);
+
+	database.setRows(rows);
+
+	view.setCurrentEntity(0);
+	view.setRows(rows);
+	view.showMainView();
+}
+
+void SelectedDatabaseActionListener::findBySurname()
+{
+	;
+}
+
 void SelectedDatabaseActionListener::listen(char action) {
 
-	// TODO: Sortowanie -> modyfikacja
+// TODO: Sortowanie -> modyfikacja
 
-	// TODO: Wyszukiwanie -> nie modyfikacja
+// TODO: Wyszukiwanie -> nie modyfikacja
 
-	// TODO: Edycja -> jezeli zatwierdzono to modyfikacja
+// TODO: Edycja -> jezeli zatwierdzono to modyfikacja
 
 	switch (action) {
 	case KEY_ESCAPE:
@@ -89,6 +131,27 @@ void SelectedDatabaseActionListener::listen(char action) {
 		log.print("Wybrana akcja = db.saveAsAction()");
 		saveAsAction();
 		return;
+
+	case '1':
+		log.print("Wybrana akcja = db.sortByDefaultOrder()");
+		sortByDefaultOrder();
+		return;
+
+	case '2':
+		log.print("Wybrana akcja = db.sortByAge()");
+		sortByAge();
+		return;
+
+	case '3':
+		log.print("Wybrana akcja = db.sortBySurname()");
+		sortBySurname();
+		return;
+
+	case '4':
+		log.print("Wybrana akcja = db.findBySurname()");
+		findBySurname();
+		return;
+
 	}
 }
 
@@ -142,6 +205,7 @@ void SelectedDatabaseActionListener::createEntityAction() {
 	else
 		log.print("Encja jest pusta");
 
+	getkey();
 	view.showMainView();
 
 }

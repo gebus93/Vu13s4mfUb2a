@@ -196,13 +196,13 @@ std::string numberToString(int n) {
 }
 
 bool compareBySurname(People a, People b) {
-	return strcmp(a.getSurname().c_str(), b.getSurname().c_str());
+	return a.getSurname() < b.getSurname();
 }
 
-bool compareByName(People a, People b) {
-	return strcmp(a.getName().c_str(), b.getName().c_str());
+bool compareByAge(People a, People b) {
+	return a.getAge() < b.getAge();
 }
 
 bool compareByDefaultCriteria(People a, People b) {
-	return a.getCreateDate() > b.getCreateDate();
+	return a.getCreateDate() < b.getCreateDate();
 }
