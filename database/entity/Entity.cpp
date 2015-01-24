@@ -2,6 +2,7 @@
 #define PEOPLE_ENTITY_INCLUDED
 
 #include <string>
+#include <string.h>
 #include <ctime>
 
 using namespace std;
@@ -26,21 +27,26 @@ public:
 		empty = false;
 	}
 
-	const string& getName() const {
-		return name;
+	const string getName() const {
+		string s(this->name);
+		return s;
 	}
 
 	void setName(const string& name) {
-		this->name = name;
+		strcpy(this->name, name.c_str());
+		this->name[name.size()] = '\0';
+
 		empty = false;
 	}
 
-	const string& getSurname() const {
-		return surname;
+	const string getSurname() const {
+		string s(this->surname);
+		return s;
 	}
 
 	void setSurname(const string& surname) {
-		this->surname = surname;
+		strcpy(this->surname, surname.c_str());
+		this->surname[surname.size()] = '\0';
 		empty = false;
 	}
 
@@ -84,8 +90,8 @@ public:
 	}
 
 private:
-	string name;
-	string surname;
+	char name[100];
+	char surname[100];
 	int age;
 	int height;
 	int weight;

@@ -50,8 +50,7 @@ void DatabaseView::printBorderOfEntityTable() {
 	int contentBackground = 0;
 	setColors( FONT_COLOR_WHITE, headerBackground);
 	locate(3, row++);
-	printf("| ID | %-10s | %-20s | %-5s | %-8s | %-5s |", "Imie", "Nazwisko",
-			"Wiek", "Wzrost", "Waga");
+	printf("| ID | %-10s | %-20s | %-5s | %-8s | %-5s |", "Imie", "Nazwisko", "Wiek", "Wzrost", "Waga");
 	locate(3, row++);
 	printSeparator(6, 4, 12, 22, 7, 10, 7);
 	setColors( FONT_COLOR_WHITE, contentBackground);
@@ -67,19 +66,28 @@ void DatabaseView::printBorderOfEntityTable() {
 	fillLine(' ');
 }
 
+void DatabaseView::printEntityRow(int index, int lineNumber) {
+	People personData = rows[index];
+	locate(4, lineNumber);
+	printf(" %2d ", (index + 1));
+	locate(9, lineNumber);
+	printf(" %-10s ", personData.getName().c_str());
+	locate(22, lineNumber);
+	printf(" %-20s ", personData.getSurname().c_str());
+	locate(45, lineNumber);
+	printf(" %-5d ", personData.getAge());
+	locate(53, lineNumber);
+	printf(" %-8d ", personData.getHeight());
+	locate(64, lineNumber);
+	printf(" %-5d ", personData.getWeight());
+}
+
 void DatabaseView::showMainView() {
-	cls();
+	clearScreen();
 	showMainMenu();
 	showSubMenu();
 
 	locate(1, 1);
-
-	// TODO: Sortowanie -> modyfikacja
-
-	// TODO: Wyszukiwanie -> nie modyfikacja
-
-	// TODO: Edycja -> jezeli zatwierdzono to modyfikacja
-
 	setColors(FONT_COLOR_LIGHT_GRAY, 0);
 	locate(3, 5);
 	printf("Aktualna baza: %s", dbName.c_str());
@@ -95,10 +103,23 @@ void DatabaseView::showMainView() {
 		printf("Nie dodano jeszcze zadnego rekordu.");
 		setColors(FONT_COLOR_LIGHT_GRAY, 0);
 	}
+
+	int lineNumber = 11;
+
+	for (int index = 0, rowsCount = rows.size(); index < rowsCount; ++index, ++lineNumber) {
+		if (index == currentEntity) {
+			setColors(FONT_COLOR_WHITE, 0);
+			printEntityRow(index, lineNumber);
+			setColors(FONT_COLOR_GRAY, 0);
+		} else {
+			printEntityRow(index, lineNumber);
+		}
+	}
+
 }
 
 string DatabaseView::showSaveAsView() {
-	cls();
+	clearScreen();
 	showMainMenu();
 	showReturnSubMenu();
 
@@ -173,7 +194,7 @@ int DatabaseView::readInt(int line, const int FIELD_LENGTH, int maxNumber) {
 
 void DatabaseView::entityCreatedCorrectly()
 {
-	cls();
+	clearScreen();
 	showMainMenu();
 	showReturnSubMenu();
 
@@ -188,7 +209,7 @@ void DatabaseView::entityCreatedCorrectly()
 
 People DatabaseView::showCreateEntityView()
 {
-	cls();
+	clearScreen();
 	showMainMenu();
 	showReturnSubMenu();
 	int line = 5;
@@ -227,7 +248,7 @@ People DatabaseView::showCreateEntityView()
 
 	} catch (int e) {
 		setColors( FONT_COLOR_WHITE, 0);
-		cls();
+		clearScreen();
 		showMainMenu();
 		showReturnSubMenu();
 		printError("Operacja zostala anulowana.");

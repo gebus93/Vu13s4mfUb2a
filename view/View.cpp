@@ -17,7 +17,7 @@ View::View() {
 View::~View() {
 }
 
-void View::printMenu(vector<string> menu) {
+void View::printMenu(vector<string> &menu) {
 	int totalChars = 0;
 	int itemsCount = (int) menu.size();
 
@@ -58,6 +58,7 @@ void View::printButton(const char* label, bool confirmed) {
 }
 
 bool View::confirmationSubView(const string& confirmation) {
+	setColors(FONT_COLOR_WHITE, 0);
 	locate(1, 4);
 	for (int i = 4, j = trows(); i < j; i++)
 		fillLine(' ');
@@ -152,4 +153,20 @@ void View::showReturnSubMenu() {
 	printMenu(menuItems);
 	setColors(FONT_COLOR_LIGHT_GRAY, 0);
 	locate(1, 1);
+}
+
+void View::clearScreen()
+{
+	system("cls");
+
+//	int rows = trows();
+//	int cols = tcols();
+//
+//	setColors(0, 0);
+//	for (int j = 0; j < rows; ++j) {
+//		locate(0, j);
+//		for (int i = 0; i < cols; ++i)
+//			putchar(' ');
+//	}
+//	setColors(FONT_COLOR_LIGHT_GRAY, 0);
 }

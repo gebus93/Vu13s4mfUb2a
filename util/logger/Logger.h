@@ -13,17 +13,19 @@
 
 class Logger {
 public:
-	static Logger& getInstance();
+	Logger();
 	void print(std::string s);
 	void printErr(std::string s);
 	virtual ~Logger();
+
 private:
 	FILE *out;
 	FILE *err;
 	bool debugMode;
-	Logger();
 
 	std::string getDateAndTime();
+	void openConnection();
+	void closeConnection();
 };
 
 #endif /* SRC_LOGGER_H_ */

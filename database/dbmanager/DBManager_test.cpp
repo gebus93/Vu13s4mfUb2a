@@ -5,7 +5,7 @@
  *      Author: Łukasz
  */
 
-#include "DBManager.h"
+#include "dbManager.h"
 
 #include <cstdio>
 #include <cstdlib>
@@ -21,23 +21,24 @@ public:
 
 private:
 	Logger* logger;
+
 	bool thatCanGetInstance();
 	bool thatCanCreateDatabase();
 	bool thatCanRemoveDatabase();
 	bool thatCanUpdateDatabase();
 	bool thatCanPersistDatabase();
 	People createExamplePerson();
-	DBManager getDBManager()
+	DBManager* getDBManager()
 	{
-		DBManager dbManager = DBManager::getInstance();
-		while (dbManager.count())
-			dbManager.remove(0);
+		DBManager* dbManager = DBManager::getInstance();
+
+		while (dbManager->count())
+			dbManager->remove(0);
 		return dbManager;
 	}
 };
 
 inline int DBManager_test::start() {
-	logger = &Logger::getInstance();
 
 	try {
 		if (!thatCanGetInstance())
@@ -66,7 +67,7 @@ inline int DBManager_test::start() {
 inline bool DBManager_test::thatCanGetInstance() {
 
 	try {
-		DBManager dbManager = getDBManager();
+		DBManager* dbManager = getDBManager();
 
 		logger->print("DBManager_test.thatCanGetInstance() finished correctly.");
 		return true;
@@ -80,11 +81,11 @@ inline bool DBManager_test::thatCanGetInstance() {
 inline bool DBManager_test::thatCanCreateDatabase() {
 
 	try {
-		DBManager dbManager = getDBManager();
+		DBManager* dbManager = getDBManager();
 
 		string dbname = "baza danych";
-		dbManager.add(dbname);
-		vector<Database<People> > all = dbManager.getAll();
+		dbManager->add(dbname);
+		vector<Database<People> > all = dbManager->getAll();
 
 		if (all.size() != 1) {
 			logger->printErr("DBManager_test.thatCanCreateDatabase() failed. Size is not equal 1.");
@@ -107,19 +108,19 @@ inline bool DBManager_test::thatCanCreateDatabase() {
 
 inline bool DBManager_test::thatCanRemoveDatabase() {
 	try {
-		DBManager dbManager = getDBManager();
+		DBManager* dbManager = getDBManager();
 
 		string dbname = "baza danych";
-		dbManager.add(dbname);
+		dbManager->add(dbname);
 
-		if (dbManager.getAll().size() != 1) {
+		if (dbManager->getAll().size() != 1) {
 			logger->printErr("DBManager_test.thatCanRemoveDatabase() failed. Size is not equal 1.");
 			return false;
 		}
 
-		dbManager.remove(0);
+		dbManager->remove(0);
 
-		if (dbManager.getAll().size() != 0) {
+		if (dbManager->getAll().size() != 0) {
 			logger->printErr("DBManager_test.thatCanRemoveDatabase() failed. Size is not equal 0.");
 			return false;
 		}
@@ -134,14 +135,14 @@ inline bool DBManager_test::thatCanRemoveDatabase() {
 
 inline bool DBManager_test::thatCanUpdateDatabase() {
 	try {
-		DBManager dbManager = getDBManager();
+		DBManager* dbManager = getDBManager();
 		string dbname = "baza danych";
-		dbManager.add(dbname);
-		Database<People> db = dbManager.get(0);
+		dbManager->add(dbname);
+		Database<People> db = dbManager->get(0);
 		db.addRow(createExamplePerson());
-		dbManager.update(0, db);
+		dbManager->update(0, db);
 
-		if (dbManager.isModified() == false) {
+		if (dbManager->isModified() == false) {
 			logger->printErr("DBManager_test.thatCanUpdateDatabase() failed. DBManager should be in modified state.");
 			return false;
 		}
@@ -166,18 +167,18 @@ inline People DBManager_test::createExamplePerson() {
 
 inline bool DBManager_test::thatCanPersistDatabase() {
 	try {
-		DBManager dbManager = getDBManager();
+		DBManager* dbManager = getDBManager();
 		string dbname = "baza danych";
-		dbManager.add(dbname);
-		Database<People> db = dbManager.get(0);
+		dbManager->add(dbname);
+		Database<People> db = dbManager->get(0);
 		db.addRow(createExamplePerson());
-		dbManager.update(0, db);
+		dbManager->update(0, db);
 
-		vector<Database<People> > beforeSave = dbManager.getAll();
+		vector<Database<People> > beforeSave = dbManager->getAll();
 
-		dbManager.saveAs("test.tmp");
-		dbManager.load("test.tmp");
-		vector<Database<People> > afterLoad = dbManager.getAll();
+		dbManager->saveAs("test.tmp");
+		dbManager->load("test.tmp");
+		vector<Database<People> > afterLoad = dbManager->getAll();
 		int beforeSaveSize = beforeSave.size();
 		int AfterLoadSize = afterLoad.size();
 
@@ -190,7 +191,7 @@ inline bool DBManager_test::thatCanPersistDatabase() {
 			if (beforeSave[i] != afterLoad[i])
 				return false;
 
-		dbManager.load();
+		dbManager->load();
 		logger->print("DBManager_test.thatCanPersistDatabase() finished correctly.");
 	} catch (...) {
 		logger->printErr("DBManager_test.thatCanPersistDatabase() failed.");

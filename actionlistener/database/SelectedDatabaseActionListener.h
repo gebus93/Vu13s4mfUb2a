@@ -24,7 +24,7 @@ public:
 
 private:
 	DBManager* dbManager;
-	Logger* log;
+	Logger log;
 	int currentDB;
 	int currentEntity;
 	DatabaseView view;

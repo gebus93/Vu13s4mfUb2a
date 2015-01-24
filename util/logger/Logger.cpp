@@ -6,21 +6,21 @@
  */
 
 #include "Logger.h"
+#include "../../compilation_mode.h"
 
 #include <sys/types.h>
 #include <ctime>
-#include "../../compilation_mode.h"
+
+#include <cstdio>
 
 Logger::Logger() {
+	out = err = NULL;
+
 #ifndef DEBUG
 	debugMode = false;
-	out = err = NULL;
-	return;
-#endif
-
+#else
 	debugMode = true;
-	out = fopen("out.log", "a+");
-	err = fopen("err.log", "a+");
+#endif
 }
 
 std::string Logger::getDateAndTime() {
@@ -44,33 +44,56 @@ std::string Logger::getDateAndTime() {
 }
 
 void Logger::print(std::string s) {
-	if (debugMode == false || out == NULL)
+	if (debugMode == false)
+		return;
+
+	openConnection();
+
+	if (out == NULL)
 		return;
 
 	std::string dateAndTime = getDateAndTime();
 	fprintf(out, "%s | %s\n", dateAndTime.c_str(), s.c_str());
 	fflush(out);
+
+	closeConnection();
 }
 
 void Logger::printErr(std::string s) {
-	if (debugMode == false || err == NULL)
+	if (debugMode == false)
+		return;
+
+	openConnection();
+
+	if (err == NULL)
 		return;
 
 	std::string dateAndTime = getDateAndTime();
 	fprintf(err, "%s | %s\n", dateAndTime.c_str(), s.c_str());
 	fflush(err);
+
+	closeConnection();
 }
 
 Logger::~Logger() {
-	if (out != NULL)
-		fclose(out);
-
-	if (err != NULL)
-		fclose(err);
+	closeConnection();
 }
 
-Logger& Logger::getInstance()
+void Logger::openConnection()
 {
-	static Logger instance;
-	return instance;
+	out = fopen("out.log", "a+");
+	err = fopen("err.log", "a+");
+}
+
+void Logger::closeConnection()
+{
+	if (out != NULL) {
+		fclose(out);
+		out = NULL;
+	}
+
+	if (err != NULL) {
+		fclose(err);
+		err = NULL;
+	}
 }

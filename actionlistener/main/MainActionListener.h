@@ -23,7 +23,7 @@ public:
 private:
 	DBManager* dbManager;
 	MainView view;
-	Logger* log;
+	Logger log;
 	int currentDB;
 
 	MainActionListener();

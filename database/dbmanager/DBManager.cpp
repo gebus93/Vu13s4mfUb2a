@@ -6,6 +6,8 @@
  */
 
 #include "DBManager.h"
+#include "../../util/utils.h"
+#include <algorithm>
 
 void DBManager::add(string dbName) {
 	const Database<People> db(dbName);
@@ -19,6 +21,8 @@ void DBManager::add(Database<People> database) {
 	modified = true;
 }
 
+vector<Database<People> > DBManager::databases;
+
 vector<Database<People> > DBManager::getAll() {
 	vector<Database<People> > temp;
 
@@ -28,11 +32,15 @@ vector<Database<People> > DBManager::getAll() {
 	return temp;
 }
 
-Database<People> DBManager::get(int index) {
-	Database<People> temp = databases[index];
-	Database<People> copy(temp.getFileName(), temp.getRows());
 
-	return copy;
+
+Database<People> DBManager::get(int index) {
+	if (index >= (int) databases.size()) {
+		logger.printErr("Baza danych wskazana do skopiowania ma index wiekszy niz ilosc baz danych. DBManager::get(int)");
+		exit(0);
+	}
+
+	return databases[index];
 }
 
 void DBManager::update(int index, Database<People> &database) {
@@ -60,14 +68,18 @@ void DBManager::saveAs(const string& dbname) {
 	file.write(reinterpret_cast<const char*>(&dbSize), sizeof(dbSize));
 	for (int i = 0; i < dbSize; i++) {
 		Database<People> currentDatabase = databases[i];
-		const string fileName = currentDatabase.getFileName();
-		int nameSize = fileName.size();
-		file.write(reinterpret_cast<const char*>(&nameSize), sizeof(nameSize));
-		file.write(fileName.c_str(), nameSize);
+
+		saveNextString(file, currentDatabase.getFileName());
+
 		int rowsCount = currentDatabase.getRowsCount();
+		saveNextInt(file, rowsCount);
+
 		vector<People> temp = currentDatabase.getRows();
-		file.write(reinterpret_cast<const char*>(&rowsCount), sizeof(rowsCount));
-		file.write(reinterpret_cast<const char*>(&temp[0]), rowsCount * sizeof(People));
+
+		for (int entityIndex = 0; entityIndex < rowsCount; ++entityIndex)
+			saveNextEntity(file, temp[entityIndex]);
+
+//		file.write(reinterpret_cast<const char*>(&temp[0]), rowsCount * sizeof(People));
 	}
 	file.close();
 	modified = false;
@@ -82,36 +94,42 @@ void DBManager::load(const string& dbname) {
 
 	if (!file.is_open())
 	{
-		logger->printErr("Nie udalo sie otworzyc pliku z baza danych - " + dbname);
+		logger.printErr("Nie udalo sie otworzyc pliku z baza danych - " + dbname);
 		return;
 	}
 
-	logger->print("Udalo sie otworzyc plik z baza danych: " + dbname);
+	logger.print("Udalo sie otworzyc plik z baza danych: " + dbname);
 
 	databases.clear();
 
-	logger->print("Udalo sie wyczyscic dotychczasowa liste baz danych.");
+	logger.print("Udalo sie wyczyscic dotychczasowa liste baz danych.");
 
-	int size;
-	file.read(reinterpret_cast<char*>(&size), sizeof(size));
+	// FIXME może wczytywanie z dysku nie działa?
+
+	logger.print(" >> Wczytywanie ilosci baz danych");
+	int size = readNextInt(file);
 	for (int i = 0; i < size; i++) {
-		int nameSize;
-		file.read(reinterpret_cast<char*>(&nameSize), sizeof(nameSize));
-		string fileName(nameSize, '\0');
-		file.read(&fileName[0], nameSize);
-		int rowsCount;
-		file.read(reinterpret_cast<char*>(&rowsCount), sizeof(rowsCount));
-		vector<People> temp(rowsCount);
-		file.read(reinterpret_cast<char*>(&temp[0]), rowsCount * sizeof(People));
+
+		logger.print(" >> Wczytywanie nazwy bazy danych o numerze " + numberToString(i));
+		string fileName = readNextString(file);
+
+		logger.print(" >> Wczytywanie ilosci wpisow w bazie danych o numerze " + numberToString(i));
+		int rowsCount = readNextInt(file);
+
+		vector<People> temp;
+
+		while (rowsCount--)
+			temp.push_back(readNextEntity(file));
+
 		const Database<People> databasePeople = Database<People>(fileName, temp);
 		databases.push_back(databasePeople);
 	}
 
-	logger->print("Udalo sie wczytac liste baz danych.");
+	logger.print("Udalo sie wczytac liste baz danych.");
 
 	file.close();
 
-	logger->print("Udalo sie zamknac plik z baza danych.");
+	logger.print("Udalo sie zamknac plik z baza danych.");
 }
 
 void DBManager::load() {
@@ -119,20 +137,76 @@ void DBManager::load() {
 }
 
 DBManager::~DBManager() {
+	INSTANCE = NULL;
 }
 
-DBManager& DBManager::getInstance() {
-	static DBManager instance;
-	return instance;
+DBManager* DBManager::INSTANCE = NULL;
+
+DBManager* DBManager::getInstance() {
+	if (!DBManager::INSTANCE)
+		DBManager::INSTANCE = new DBManager();
+
+	return DBManager::INSTANCE;
 }
 
 DBManager::DBManager() {
+	INSTANCE = NULL;
 	modified = false;
-	logger = &Logger::getInstance();
 	load();
 }
 
 int DBManager::count()
 {
 	return (int) databases.size();
+}
+
+string DBManager::readNextString(ifstream& file) {
+	int length = readNextInt(file);
+	logger.print("Dlugosc napisu: " + numberToString(length));
+
+	string text(length, '\0');
+	file.read(&text[0], length);
+
+	logger.print("Wczytano napis: " + text);
+
+	return text;
+}
+
+int DBManager::readNextInt(ifstream& file) {
+	int number;
+	file.read(reinterpret_cast<char*>(&number), sizeof(int));
+
+	logger.print("Wczytano liczbe: " + numberToString(number));
+
+	return number;
+}
+
+void DBManager::saveNextString(ofstream& file, const string& s) {
+	int length = s.size();
+	file.write(reinterpret_cast<const char*>(&length), sizeof(length));
+	file.write(s.c_str(), length);
+}
+
+void DBManager::saveNextInt(ofstream& file, int& i) {
+	file.write(reinterpret_cast<const char*>(&i), sizeof(int));
+}
+
+People DBManager::readNextEntity(ifstream& file) {
+	People person;
+	file.read(reinterpret_cast<char*>(&person), sizeof(People));
+
+	logger.print(
+			"Wczytano osobe: "
+					+ person.getName() + " "
+					+ person.getSurname() + " "
+					+ numberToString(person.getAge()) + " "
+					+ numberToString(person.getHeight()) + " "
+					+ numberToString(person.getWeight())
+							);
+
+	return person;
+}
+
+void DBManager::saveNextEntity(ofstream& file, const People& person) {
+	file.write(reinterpret_cast<const char*>(&person), sizeof(People));
 }

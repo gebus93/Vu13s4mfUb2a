@@ -10,7 +10,6 @@
 
 #include <string>
 #include <vector>
-#include <algorithm>
 #include <fstream>
 
 #include "../../util/logger/Logger.h"
@@ -21,7 +20,8 @@ using namespace std;
 
 class DBManager {
 public:
-	static DBManager& getInstance();
+	DBManager();
+	static DBManager * getInstance();
 	void add(string);
 	void add(Database<People>);
 	vector<Database<People> > getAll();
@@ -35,12 +35,23 @@ public:
 	void load(const string& dbname);
 	int count();
 	virtual ~DBManager();
+	static DBManager* INSTANCE;
 
 private:
-	vector<Database<People> > databases;
+
+	static vector<Database<People> > databases;
+
+	string readNextString(ifstream &file);
+	void saveNextString(ofstream &file, const string& s);
+
+	int readNextInt(ifstream &file);
+	void saveNextInt(ofstream &file, int& i);
+
+	People readNextEntity(ifstream &file);
+	void saveNextEntity(ofstream &file, const People& p);
+
 	bool modified;
-	Logger* logger;
-	DBManager();
+	Logger logger;
 };
 
 #endif /* DATABASE_DBMANAGER_DBMANAGER_H_ */

@@ -18,7 +18,7 @@
  */
 
 void MainView::showMainView() {
-	cls();
+	clearScreen();
 	showMainMenu();
 
 	locate(3, 5);
@@ -37,7 +37,7 @@ void MainView::showMainView() {
 }
 
 string MainView::showCreateView() {
-	cls();
+	clearScreen();
 	showMainMenu();
 	showReturnSubMenu();
 
@@ -58,8 +58,7 @@ bool MainView::showExitView() {
 
 bool MainView::confirmDeleteView() {
 	Database<People> currentDb = databaseList[currentDB];
-	string confirmation = "Czy na pewno chcesz usunac baze '"
-			+ currentDb.getFileName() + "' wraz z danymi?";
+	string confirmation = "Czy na pewno chcesz usunac baze '" + currentDb.getFileName() + "' wraz z danymi?";
 	bool confirmed = confirmationSubView(confirmation);
 	return confirmed;
 }
@@ -79,6 +78,7 @@ void MainView::showMainMenu() {
 	std::vector<std::string> menuItems;
 	menuItems.push_back("Nowa baza [N]");
 	menuItems.push_back("Zapisz [S]");
+	// FIXME to nie działa
 	menuItems.push_back("Usun [Del]");
 	menuItems.push_back("Wyjscie [Q]");
 
@@ -145,8 +145,7 @@ void MainView::printRowWithDatabase(int lineNumber, int index) {
 void MainView::showDatabaseList() {
 	setColors(FONT_COLOR_GRAY, 0);
 	int lineNumber = 10;
-	for (int index = 0, databaseSize = databaseList.size();
-			index < databaseSize; index++, lineNumber++) {
+	for (int index = 0, databaseSize = databaseList.size(); index < databaseSize; ++index, ++lineNumber) {
 		if (index == currentDB) {
 			setColors(FONT_COLOR_WHITE, 0);
 			printRowWithDatabase(lineNumber, index);

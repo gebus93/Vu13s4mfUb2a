@@ -16,11 +16,16 @@
 using namespace rlutil;
 
 SelectedDatabaseActionListener::SelectedDatabaseActionListener(int currentDB) {
-	log = &Logger::getInstance();
 	this->currentDB = currentDB;
 	this->currentEntity = 0;
 
-	dbManager = &DBManager::getInstance();
+	dbManager = DBManager::getInstance();
+
+	if (currentDB >= dbManager->count()) {
+		log.printErr("Baza danych wskazana do otwarcia ma index wiekszy niz ilosc baz danych.");
+		exit(0);
+	}
+
 	database = dbManager->get(currentDB);
 
 	view.setDbName(database.getFileName());
@@ -42,39 +47,46 @@ void SelectedDatabaseActionListener::invoke(int currentDB) {
 }
 
 void SelectedDatabaseActionListener::listen(char action) {
+
+	// TODO: Sortowanie -> modyfikacja
+
+	// TODO: Wyszukiwanie -> nie modyfikacja
+
+	// TODO: Edycja -> jezeli zatwierdzono to modyfikacja
+
 	switch (action) {
 	case KEY_ESCAPE:
-		log->print("Wybrana akcja = db.escapeAction()");
+		log.print("Wybrana akcja = db.escapeAction()");
 		escapeAction();
 		return;
 
 	case KEY_UP:
-		log->print("Wybrana akcja = db.upArrowAction()");
+		log.print("Wybrana akcja = db.upArrowAction()");
 		upArrowAction();
 		return;
 
 	case KEY_DOWN:
-		log->print("Wybrana akcja = db.downArrowAction()");
+		log.print("Wybrana akcja = db.downArrowAction()");
 		downArrowAction();
 		return;
 
 	case KEY_DELETE:
-		log->print("Wybrana akcja = db.deleteEntityAction()");
+		log.print("Wybrana akcja = db.deleteEntityAction()");
 		deleteEntityAction();
 		return;
 
 	case 'n':
-		log->print("Wybrana akcja = db.createEntityAction()");
+		log.print("Wybrana akcja = db.createEntityAction()");
 		createEntityAction();
 		return;
 
 	case 's':
-		log->print("Wybrana akcja = db.saveAction()");
+		log.print("Wybrana akcja = db.saveAction()");
 		saveAction();
 		return;
 
 	case KEY_F2:
-		log->print("Wybrana akcja = db.saveAsAction()");
+		log.print("Wybrana akcja = db.saveAsAction()");
 		saveAsAction();
 		return;
 	}
@@ -86,7 +98,7 @@ void SelectedDatabaseActionListener::upArrowAction() {
 		view.setCurrentEntity(currentEntity);
 	}
 
-	log->print("currentEntity = " + numberToString(currentEntity));
+	log.print("currentEntity = " + numberToString(currentEntity));
 }
 
 void SelectedDatabaseActionListener::downArrowAction() {
@@ -95,7 +107,7 @@ void SelectedDatabaseActionListener::downArrowAction() {
 		view.setCurrentEntity(currentEntity);
 	}
 
-	log->print("currentEntity = " + numberToString(currentEntity));
+	log.print("currentEntity = " + numberToString(currentEntity));
 }
 
 void SelectedDatabaseActionListener::deleteEntityAction() {
@@ -124,11 +136,11 @@ void SelectedDatabaseActionListener::createEntityAction() {
 
 		view.setRows(database.getRows());
 
-		log->print("Encja nie jest pusta");
-		log->print("Aktualny rozmiar bazy danych: " + numberToString(database.getRowsCount()));
+		log.print("Encja nie jest pusta");
+		log.print("Aktualny rozmiar bazy danych: " + numberToString(database.getRowsCount()));
 	}
 	else
-		log->print("Encja jest pusta");
+		log.print("Encja jest pusta");
 
 	view.showMainView();
 
