@@ -32,12 +32,14 @@ public:
 
 private:
 	int currentDB;
+	int lastPageCount;
 	std::vector<Database<People> > databaseList;
 	void showMainMenu();
 	void printBorderOfDatabasesTable();
 	void pressEnterToAccept(int lineNumber);
 	void printRowWithDatabase(int lineNumber, int index);
 	void showDatabaseList();
+	int calculateRowsCount();
 };
 
 #endif /* VIEW_MAIN_MAINVIEW_H_ */

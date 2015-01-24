@@ -69,6 +69,7 @@ bool MainView::confirmDeleteView() {
 
 MainView::MainView() {
 	this->currentDB = 0;
+	lastPageCount = 0;
 }
 
 MainView::~MainView() {
@@ -107,7 +108,10 @@ void MainView::printBorderOfDatabasesTable() {
 	locate(3, row++);
 	printSeparatorForThreeColumns(4, 22, 17);
 	setColors(FONT_COLOR_WHITE, contentBackground);
-	for (int i = 0, j = databaseList.size(); i < j; i++, row++) {
+
+	int rowsCount = calculateRowsCount();
+
+	for (int i = 0, j = rowsCount; i < j; i++, row++) {
 		locate(3, row);
 		Database<People> currentDatabase = databaseList[i];
 		printf("| %2s | %20s | %15s |", "", "", "");
@@ -142,10 +146,39 @@ void MainView::printRowWithDatabase(int lineNumber, int index) {
 
 }
 
+int MainView::calculateRowsCount()
+{
+	int index = (currentDB / 10) * 10;
+	int rowsCount = databaseList.size() - index;
+	if (rowsCount > 10)
+		rowsCount = 10;
+
+	return rowsCount;
+}
+
 void MainView::showDatabaseList() {
-	setColors(FONT_COLOR_GRAY, 0);
 	int lineNumber = 10;
-	for (int index = 0, databaseSize = databaseList.size(); index < databaseSize; ++index, ++lineNumber) {
+
+	int index = (currentDB / 10) * 10;
+	int rowsCount = calculateRowsCount();
+
+	if (lastPageCount != rowsCount) {
+		int i = lastPageCount > rowsCount ? rowsCount : lastPageCount;
+
+		lineNumber += i;
+
+		for (; i <= 10; ++i) {
+			locate(1, lineNumber++);
+			fillLine(' ');
+		}
+
+		printBorderOfDatabasesTable();
+
+		lineNumber = 10;
+	}
+
+	setColors(FONT_COLOR_GRAY, 0);
+	for (int i = 0; i < rowsCount; ++i, ++index, ++lineNumber) {
 		if (index == currentDB) {
 			setColors(FONT_COLOR_WHITE, 0);
 			printRowWithDatabase(lineNumber, index);
@@ -156,6 +189,7 @@ void MainView::showDatabaseList() {
 	}
 
 	pressEnterToAccept(lineNumber);
+	lastPageCount = rowsCount;
 }
 
 void MainView::setDatabaseList(
