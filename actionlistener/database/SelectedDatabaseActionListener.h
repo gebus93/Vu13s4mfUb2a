@@ -42,6 +42,7 @@ private:
 	void sortByAge();
 	void sortBySurname();
 	void findBySurname();
+	void openInSingleView();
 };
 
 #endif /* ACTIONLISTENER_DATABASE_SELECTEDDATABASEACTIONLISTENER_H_ */

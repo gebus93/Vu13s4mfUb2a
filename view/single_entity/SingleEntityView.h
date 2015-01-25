@@ -27,6 +27,10 @@ private:
 	vector<People> rows;
 	int currentEntity;
 	void showMainMenu();
+	void printLabelAndStringValue(int line, const char* label,
+			const std::string& value);
+	void printLabelAndIntValue(int line, const char* label, int value);
+	void showSubMenu();
 };
 
 #endif /* SINGLEENTITYVIEW_H_ */

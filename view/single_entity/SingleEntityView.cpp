@@ -17,10 +17,32 @@ SingleEntityView::SingleEntityView() {
 	currentEntity = 0;
 }
 
+void SingleEntityView::printLabelAndStringValue(int line, const char* label,const std::string& value) {
+	locate(3, line);
+	printf("%10s: %s", label, value.c_str());
+}
+
+void SingleEntityView::printLabelAndIntValue(int line, const char* label,
+		int value) {
+	locate(3, line);
+	printf("%10s: %d", label, value);
+}
+
 void SingleEntityView::showMainView() {
 	cls();
 	showMainMenu();
+	showSubMenu();
 
+	locate(3, 5);
+	printf("Osoba %d z %d", (currentEntity + 1), rows.size());
+
+	int line = 7;
+
+	printLabelAndStringValue(line, "Imie", rows[currentEntity].getName());
+	printLabelAndStringValue(++line, "Nazwisko",rows[currentEntity].getSurname());
+	printLabelAndIntValue(++line, "Wiek", rows[currentEntity].getAge());
+	printLabelAndIntValue(++line, "Wzrost", rows[currentEntity].getHeight());
+	printLabelAndIntValue(++line, "Waga", rows[currentEntity].getWeight());
 }
 
 void SingleEntityView::setRows(const vector<People>& rows) {
@@ -41,4 +63,15 @@ void SingleEntityView::showMainMenu() {
 	printMenu(menuItems);
 	fillLine(' ');
 	setColors(FONT_COLOR_LIGHT_GRAY, 0);
+}
+
+void SingleEntityView::showSubMenu() {
+	std::vector<std::string> menuItems;
+	menuItems.push_back("Poprzedni [Strzalka w lewo]");
+	menuItems.push_back("Nastepny [Strzalka w prawo]");
+	locate(1, trows());
+	setColors(FONT_COLOR_WHITE, BACKGROUND_COLOR_GRAY);
+	printMenu(menuItems);
+	setColors(FONT_COLOR_LIGHT_GRAY, 0);
+	locate(1, 1);
 }

@@ -15,6 +15,7 @@
 #include "../../libraries/rlutil/rlutil.h"
 #include "../../util/utils.h"
 #include "../filtered_database/FilteredDatabaseActionListener.h"
+#include "../single_entity/SingleEntityActionListener.h"
 
 using namespace rlutil;
 
@@ -100,11 +101,21 @@ void SelectedDatabaseActionListener::findBySurname() {
 	view.showMainView();
 }
 
+void SelectedDatabaseActionListener::openInSingleView() {
+	SingleEntityActionListener::invoke(database.getRows(), currentEntity);
+	view.showMainView();
+}
+
 void SelectedDatabaseActionListener::listen(char action) {
 	switch (action) {
 	case KEY_ESCAPE:
 		log.print("Wybrana akcja = db.escapeAction()");
 		escapeAction();
+		return;
+
+	case KEY_ENTER:
+		log.print("Wybrana akcja = db.openInSingleView()");
+		openInSingleView();
 		return;
 
 	case KEY_UP:

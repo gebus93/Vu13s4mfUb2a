@@ -7,12 +7,21 @@
 
 #include "SingleEntityActionListener.h"
 
+#include <string>
+
+#include "../../libraries/rlutil/rlutil.h"
+#include "../../util/utils.h"
+
 void SingleEntityActionListener::invoke(std::vector<People> rows) {
+	SingleEntityActionListener::invoke(rows, 0);
+}
+
+void SingleEntityActionListener::invoke(std::vector<People> rows, int currentEntity) {
 	if (rows.size() == 0)
 		return;
 
 	char action = 0;
-	FilteredDatabaseActionListener listener(rows);
+	SingleEntityActionListener listener(rows, currentEntity);
 
 	do {
 		action = getkey();

@@ -18,6 +18,7 @@
 class SingleEntityActionListener: public ActionListener {
 public:
 	static void invoke(std::vector<People> rows);
+	static void invoke(std::vector<People> rows, int currentEntity);
 
 private:
 	SingleEntityActionListener(std::vector<People> rows);
