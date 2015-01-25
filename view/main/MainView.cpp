@@ -18,7 +18,7 @@
  */
 
 void MainView::showMainView() {
-	clearScreen();
+	cls();
 	showMainMenu();
 
 	locate(3, 5);
@@ -37,7 +37,7 @@ void MainView::showMainView() {
 }
 
 string MainView::showCreateView() {
-	clearScreen();
+	cls();
 	showMainMenu();
 	showReturnSubMenu();
 

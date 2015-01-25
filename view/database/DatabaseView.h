@@ -34,7 +34,7 @@ public:
 
 	void setCurrentEntity(int currentEntity);
 
-private:
+protected:
 	string dbName;
 	vector<People> rows;
 	int currentEntity;
@@ -43,13 +43,15 @@ private:
 	void showMainMenu();
 	void showSubMenu();
 	void printBorderOfEntityTable();
+	void showEntityList();
+	int calculateRowsCount();
+	void printEntityRow(int index, int lineNumber);
+
+private:
 	void showLabelForEntity(const char* label, const int fieldSize, int line);
 	string readString(int line, const int FIELD_LENGTH);
 	int readInt(int line, const int FIELD_LENGTH, int maxNumber = 1000000);
 	void entityCreatedCorrectly();
-	void printEntityRow(int index, int lineNumber);
-	void showEntityList();
-	int calculateRowsCount();
 };
 
 #endif /* DATABASEVIEW_H_ */

@@ -154,19 +154,3 @@ void View::showReturnSubMenu() {
 	setColors(FONT_COLOR_LIGHT_GRAY, 0);
 	locate(1, 1);
 }
-
-void View::clearScreen()
-{
-	system("cls");
-
-//	int rows = trows();
-//	int cols = tcols();
-//
-//	setColors(0, 0);
-//	for (int j = 0; j < rows; ++j) {
-//		locate(0, j);
-//		for (int i = 0; i < cols; ++i)
-//			putchar(' ');
-//	}
-//	setColors(FONT_COLOR_LIGHT_GRAY, 0);
-}

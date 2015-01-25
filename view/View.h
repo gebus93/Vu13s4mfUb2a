@@ -28,7 +28,6 @@ protected:
 	string getDatabaseName();
 	void showInputFieldBackground(const int FIELD_LENGTH);
 	void showReturnSubMenu();
-	void clearScreen();
 };
 
 #endif /* VIEW_VIEW_H_ */
