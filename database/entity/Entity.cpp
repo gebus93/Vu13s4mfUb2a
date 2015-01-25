@@ -5,6 +5,8 @@
 #include <string.h>
 #include <ctime>
 
+#include "../database/Database.cpp"
+
 using namespace std;
 
 class People {
@@ -61,7 +63,7 @@ public:
 
 	People() {
 		empty = true;
-		createDate = time(0);
+		id = ++Database<People>::next_id;
 		age = 0;
 		height = 0;
 		weight = 0;
@@ -69,7 +71,7 @@ public:
 	}
 
 	unsigned long long int getCreateDate() const {
-		return createDate;
+		return id;
 	}
 
 	bool operator==(const People& other) {
@@ -95,7 +97,7 @@ private:
 	int age;
 	int height;
 	int weight;
-	unsigned long long int createDate;
+	unsigned long long int id;
 	bool empty;
 };
 

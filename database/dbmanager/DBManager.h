@@ -49,6 +49,8 @@ private:
 
 	People readNextEntity(ifstream &file);
 	void saveNextEntity(ofstream &file, const People& p);
+	void saveNextInt64(ofstream& file, unsigned long long int number);
+	unsigned long long int readNextInt64(std::ifstream& file);
 
 	bool modified;
 	Logger logger;

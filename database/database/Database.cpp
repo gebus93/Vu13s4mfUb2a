@@ -10,6 +10,7 @@ using namespace std;
 template<typename T>
 class Database {
 public:
+	static unsigned long long int next_id;
 
 	Database();
 	Database(string fileName);
@@ -66,6 +67,9 @@ protected:
 /*
  * IMPLEMENTATIONS
  */
+
+template<typename T>
+unsigned long long int Database<T>::next_id = 0;
 
 template<typename T>
 inline Database<T>::Database() {

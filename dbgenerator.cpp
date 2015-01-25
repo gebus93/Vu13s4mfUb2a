@@ -8,6 +8,7 @@
 #include <cstdio>
 #include <string>
 #include <vector>
+#include "windows.h"
 
 #include "database/database/Database.cpp"
 #include "database/dbmanager/DBManager.h"
@@ -24,6 +25,8 @@ void readDatabase(FILE* input) {
 
 	while (rowsCount--)
 	{
+		Sleep(100);
+
 		char name[100];
 		char surname[100];
 		int age, height, weight;
