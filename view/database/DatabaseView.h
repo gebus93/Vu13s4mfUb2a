@@ -23,6 +23,7 @@ public:
 	void showMainView();
 	bool showSaveView();
 	string showSaveAsView();
+	string showSearchView();
 	People showCreateEntityView();
 	bool showExitView();
 

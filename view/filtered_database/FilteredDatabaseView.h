@@ -10,9 +10,9 @@
 
 #include "../database/DatabaseView.h"
 
-class FilteredDatabase: public DatabaseView {
+class FilteredDatabaseView: public DatabaseView {
 public:
-	FilteredDatabase();
+	FilteredDatabaseView();
 	void showMainView();
 
 protected:

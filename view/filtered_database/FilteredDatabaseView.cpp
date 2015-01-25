@@ -5,7 +5,7 @@
  *      Author: admin
  */
 
-#include "FilteredDatabase.h"
+#include "FilteredDatabaseView.h"
 
 #include "../../libraries/rlutil/rlutil.h"
 #include "../../util/colors.h"
@@ -13,10 +13,10 @@
 
 using namespace rlutil;
 
-FilteredDatabase::FilteredDatabase() {
+FilteredDatabaseView::FilteredDatabaseView() {
 }
 
-void FilteredDatabase::showMainView() {
+void FilteredDatabaseView::showMainView() {
 	cls();
 	showMainMenu();
 
@@ -40,7 +40,7 @@ void FilteredDatabase::showMainView() {
 	showEntityList();
 }
 
-void FilteredDatabase::showMainMenu() {
+void FilteredDatabaseView::showMainMenu() {
 	std::vector<std::string> menuItems;
 	menuItems.push_back("Powrot [Esc]");
 	locate(1, 1);
@@ -51,7 +51,7 @@ void FilteredDatabase::showMainMenu() {
 	setColors(FONT_COLOR_LIGHT_GRAY, 0);
 }
 
-void FilteredDatabase::printMenu(vector<string> &menu) {
+void FilteredDatabaseView::printMenu(vector<string> &menu) {
 	int totalChars = 0;
 	int itemsCount = (int) menu.size();
 

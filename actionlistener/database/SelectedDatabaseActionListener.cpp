@@ -7,12 +7,14 @@
 
 #include "SelectedDatabaseActionListener.h"
 
-#include<algorithm>
+#include <algorithm>
+#include <cstdlib>
 #include <string>
 #include <vector>
 
 #include "../../libraries/rlutil/rlutil.h"
 #include "../../util/utils.h"
+#include "../filtered_database/FilteredDatabaseActionListener.h"
 
 using namespace rlutil;
 
@@ -23,7 +25,8 @@ SelectedDatabaseActionListener::SelectedDatabaseActionListener(int currentDB) {
 	dbManager = DBManager::getInstance();
 
 	if (currentDB >= dbManager->count()) {
-		log.printErr("Baza danych wskazana do otwarcia ma index wiekszy niz ilosc baz danych.");
+		log.printErr(
+				"Baza danych wskazana do otwarcia ma index wiekszy niz ilosc baz danych.");
 		exit(0);
 	}
 
@@ -47,8 +50,7 @@ void SelectedDatabaseActionListener::invoke(int currentDB) {
 	} while (listener.isRunning());
 }
 
-void SelectedDatabaseActionListener::sortByDefaultOrder()
-{
+void SelectedDatabaseActionListener::sortByDefaultOrder() {
 	vector<People> rows = database.getRows();
 	sort(rows.begin(), rows.end(), compareByDefaultCriteria);
 
@@ -59,8 +61,7 @@ void SelectedDatabaseActionListener::sortByDefaultOrder()
 	view.showMainView();
 }
 
-void SelectedDatabaseActionListener::sortByAge()
-{
+void SelectedDatabaseActionListener::sortByAge() {
 	vector<People> rows = database.getRows();
 	sort(rows.begin(), rows.end(), compareByAge);
 
@@ -71,8 +72,7 @@ void SelectedDatabaseActionListener::sortByAge()
 	view.showMainView();
 }
 
-void SelectedDatabaseActionListener::sortBySurname()
-{
+void SelectedDatabaseActionListener::sortBySurname() {
 	vector<People> rows = database.getRows();
 	sort(rows.begin(), rows.end(), compareBySurname);
 
@@ -83,19 +83,20 @@ void SelectedDatabaseActionListener::sortBySurname()
 	view.showMainView();
 }
 
-void SelectedDatabaseActionListener::findBySurname()
-{
-	;
+void SelectedDatabaseActionListener::findBySurname() {
+	string personsSurname = view.showSearchView();
+
+	if (personsSurname.size() > 0) {
+		const std::vector<People> rows = database.getRows();
+
+		// FIXME przefiltrowac!!!
+
+		FilteredDatabaseActionListener::invoke(rows);
+	}
+	view.showMainView();
 }
 
 void SelectedDatabaseActionListener::listen(char action) {
-
-// TODO: Sortowanie -> modyfikacja
-
-// TODO: Wyszukiwanie -> nie modyfikacja
-
-// TODO: Edycja -> jezeli zatwierdzono to modyfikacja
-
 	switch (action) {
 	case KEY_ESCAPE:
 		log.print("Wybrana akcja = db.escapeAction()");
@@ -193,16 +194,16 @@ void SelectedDatabaseActionListener::deleteEntityAction() {
 void SelectedDatabaseActionListener::createEntityAction() {
 	People person = view.showCreateEntityView();
 
-	if (!person.isEmpty())
-	{
+	if (!person.isEmpty()) {
 		database.addRow(person);
 
 		view.setRows(database.getRows());
 
 		log.print("Encja nie jest pusta");
-		log.print("Aktualny rozmiar bazy danych: " + numberToString(database.getRowsCount()));
-	}
-	else
+		log.print(
+				"Aktualny rozmiar bazy danych: "
+						+ numberToString(database.getRowsCount()));
+	} else
 		log.print("Encja jest pusta");
 
 	getkey();

@@ -235,6 +235,39 @@ int DatabaseView::readInt(int line, const int FIELD_LENGTH, int maxNumber) {
 	return number;
 }
 
+string DatabaseView::showSearchView() {
+	cls();
+	showMainMenu();
+	showReturnSubMenu();
+
+	const int FIELD_LENGTH = 20;
+
+	string label = "Podaj nazwisko poszukiwanej osoby: ";
+
+	center(label.size() + FIELD_LENGTH);
+
+	setColor(WHITE);
+	printStdString(label);
+
+	showInputFieldBackground(FIELD_LENGTH);
+	for (int i = 0; i < FIELD_LENGTH; i++)
+		putchar('\b');
+
+	try {
+		string personsSurname = inputText(FIELD_LENGTH);
+		setColors(FONT_COLOR_LIGHT_GRAY, 0);
+		return personsSurname;
+
+	} catch (int e) {
+		printError("Operacja zostala anulowana.");
+		getkey();
+	}
+
+	setColors(FONT_COLOR_LIGHT_GRAY, 0);
+
+	return "";
+}
+
 void DatabaseView::entityCreatedCorrectly() {
 	cls();
 	showMainMenu();

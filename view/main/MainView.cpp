@@ -58,7 +58,8 @@ bool MainView::showExitView() {
 
 bool MainView::confirmDeleteView() {
 	Database<People> currentDb = databaseList[currentDB];
-	string confirmation = "Czy na pewno chcesz usunac baze '" + currentDb.getFileName() + "' wraz z danymi?";
+	string confirmation = "Czy na pewno chcesz usunac baze '"
+			+ currentDb.getFileName() + "' wraz z danymi?";
 	bool confirmed = confirmationSubView(confirmation);
 	return confirmed;
 }
@@ -79,7 +80,6 @@ void MainView::showMainMenu() {
 	std::vector<std::string> menuItems;
 	menuItems.push_back("Nowa baza [N]");
 	menuItems.push_back("Zapisz [S]");
-	// FIXME to nie działa
 	menuItems.push_back("Usun [Del]");
 	menuItems.push_back("Wyjscie [Q]");
 
@@ -146,8 +146,7 @@ void MainView::printRowWithDatabase(int lineNumber, int index) {
 
 }
 
-int MainView::calculateRowsCount()
-{
+int MainView::calculateRowsCount() {
 	int index = (currentDB / 10) * 10;
 	int rowsCount = databaseList.size() - index;
 	if (rowsCount > 10)
