@@ -152,6 +152,7 @@ void DatabaseView::showMainView() {
 		setColors(FONT_COLOR_WHITE, 0);
 		printf("Nie dodano jeszcze zadnego rekordu.");
 		setColors(FONT_COLOR_LIGHT_GRAY, 0);
+		return;
 	}
 
 	showEntityList();
