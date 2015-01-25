@@ -35,6 +35,7 @@ void FilteredDatabaseView::showMainView() {
 		setColors(FONT_COLOR_WHITE, 0);
 		printf("Nic nie znaleziono.");
 		setColors(FONT_COLOR_LIGHT_GRAY, 0);
+		return;
 	}
 
 	showEntityList();
