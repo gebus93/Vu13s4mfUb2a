@@ -7,8 +7,11 @@
 
 #include "FilteredDatabaseActionListener.h"
 
+#include <string>
+
 #include "../../libraries/rlutil/rlutil.h"
 #include "../../util/utils.h"
+#include "../single_entity/SingleEntityActionListener.h"
 
 using namespace rlutil;
 
@@ -22,7 +25,8 @@ void FilteredDatabaseActionListener::invoke(std::vector<People> rows) {
 	} while (listener.isRunning());
 }
 
-FilteredDatabaseActionListener::FilteredDatabaseActionListener(std::vector<People> rows) {
+FilteredDatabaseActionListener::FilteredDatabaseActionListener(
+		std::vector<People> rows) {
 	running = true;
 	currentEntity = 0;
 	this->rows = rows;
@@ -55,11 +59,21 @@ void FilteredDatabaseActionListener::escapeAction() {
 	running = false;
 }
 
+void FilteredDatabaseActionListener::openInSingleView() {
+	SingleEntityActionListener::invoke(rows, currentEntity);
+	view.showMainView();
+}
+
 void FilteredDatabaseActionListener::listen(char action) {
 	switch (action) {
 	case KEY_ESCAPE:
 		log.print("Wybrana akcja = filteredDB.escapeAction()");
 		escapeAction();
+		return;
+
+	case KEY_ENTER:
+		log.print("Wybrana akcja = filteredDB.openInSingleView()");
+		openInSingleView();
 		return;
 
 	case KEY_UP:

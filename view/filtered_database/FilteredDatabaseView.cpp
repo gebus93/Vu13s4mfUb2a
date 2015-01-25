@@ -42,6 +42,7 @@ void FilteredDatabaseView::showMainView() {
 
 void FilteredDatabaseView::showMainMenu() {
 	std::vector<std::string> menuItems;
+	menuItems.push_back("Otworz [Enter]");
 	menuItems.push_back("Powrot [Esc]");
 	locate(1, 1);
 	setColors(FONT_COLOR_LIGHT_GRAY, BACKGROUND_COLOR_LIGHT_BLUE);

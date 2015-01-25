@@ -30,6 +30,7 @@ private:
 	void downArrowAction();
 	void upArrowAction();
 	void escapeAction();
+	void openInSingleView();
 };
 
 #endif /* FILTEREDDATABASEACTIONLISTENER_H_ */
