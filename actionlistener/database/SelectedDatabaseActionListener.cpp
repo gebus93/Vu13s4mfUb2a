@@ -87,11 +87,17 @@ void SelectedDatabaseActionListener::findBySurname() {
 	string personsSurname = view.showSearchView();
 
 	if (personsSurname.size() > 0) {
-		const std::vector<People> rows = database.getRows();
+		std::vector<People> rows = database.getRows();
+		std::vector<People> filteredRows;
+
+		for (int i = 0, j = rows.size(); i < j; ++i) {
+			if (personsSurname == rows[i].getSurname())
+				filteredRows.push_back(rows[i]);
+		}
 
 		// FIXME przefiltrowac!!!
 
-		FilteredDatabaseActionListener::invoke(rows);
+		FilteredDatabaseActionListener::invoke(filteredRows);
 	}
 	view.showMainView();
 }
