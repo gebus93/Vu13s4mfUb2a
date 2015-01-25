@@ -55,7 +55,7 @@ void SelectedDatabaseActionListener::sortByDefaultOrder() {
 	sort(rows.begin(), rows.end(), compareByDefaultCriteria);
 
 	database.setRows(rows);
-
+	currentEntity = 0;
 	view.setCurrentEntity(0);
 	view.setRows(rows);
 	view.showMainView();
@@ -66,7 +66,7 @@ void SelectedDatabaseActionListener::sortByAge() {
 	sort(rows.begin(), rows.end(), compareByAge);
 
 	database.setRows(rows);
-
+	currentEntity = 0;
 	view.setCurrentEntity(0);
 	view.setRows(rows);
 	view.showMainView();
@@ -77,7 +77,7 @@ void SelectedDatabaseActionListener::sortBySurname() {
 	sort(rows.begin(), rows.end(), compareBySurname);
 
 	database.setRows(rows);
-
+	currentEntity = 0;
 	view.setCurrentEntity(0);
 	view.setRows(rows);
 	view.showMainView();
@@ -94,8 +94,6 @@ void SelectedDatabaseActionListener::findBySurname() {
 			if (personsSurname == rows[i].getSurname())
 				filteredRows.push_back(rows[i]);
 		}
-
-		// FIXME przefiltrowac!!!
 
 		FilteredDatabaseActionListener::invoke(filteredRows);
 	}
