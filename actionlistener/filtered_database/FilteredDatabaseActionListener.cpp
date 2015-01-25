@@ -22,8 +22,7 @@ void FilteredDatabaseActionListener::invoke(std::vector<People> rows) {
 	} while (listener.isRunning());
 }
 
-FilteredDatabaseActionListener::FilteredDatabaseActionListener(
-		std::vector<People> rows) {
+FilteredDatabaseActionListener::FilteredDatabaseActionListener(std::vector<People> rows) {
 	running = true;
 	currentEntity = 0;
 	this->rows = rows;
@@ -59,17 +58,17 @@ void FilteredDatabaseActionListener::escapeAction() {
 void FilteredDatabaseActionListener::listen(char action) {
 	switch (action) {
 	case KEY_ESCAPE:
-		log.print("Wybrana akcja = db.escapeAction()");
+		log.print("Wybrana akcja = filteredDB.escapeAction()");
 		escapeAction();
 		return;
 
 	case KEY_UP:
-		log.print("Wybrana akcja = db.upArrowAction()");
+		log.print("Wybrana akcja = filteredDB.upArrowAction()");
 		upArrowAction();
 		return;
 
 	case KEY_DOWN:
-		log.print("Wybrana akcja = db.downArrowAction()");
+		log.print("Wybrana akcja = filteredDB.downArrowAction()");
 		downArrowAction();
 		return;
 	}
